@@ -1,0 +1,7 @@
+.required {
+	color :  red;
+}
+.error_message {
+	color : #FF0000;
+	display: none;
+}

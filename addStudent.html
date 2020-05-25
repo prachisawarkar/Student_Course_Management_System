@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Student Registration</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="container">
+        <h1 class="text-primary">Student Registration</h1>
+		<form method="post" name="student_signup">
+			<div class="form-group">
+				<label for="name">Name:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="name_error"></span>
+				<input type="text" name="name" id="name" class="form-control" placeholder="Name">
+			</div>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="email_error"></span>
+				<input type="email" name="email" id="email" class="form-control" placeholder="Email">
+			</div>
+			<div class="form-group">
+				<label for="Username">Username:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="username_error"></span>
+				<input type="text" name="username" id="username" class="form-control" placeholder="Username">
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="password_error"></span>
+				<input type="password" name="password" id="password" class="form-control" placeholder="Password">
+			</div>
+			<div class="form-group">
+				<label for="confirm_password">Confirm Password:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="confirm_password_error"></span>
+				<input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password">
+			</div>
+			<div class="form-group">
+				<label for="phone_no">Phone No.:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="phone_error"></span>
+				<input type="text" name="phone_no" id="phone_no" class="form-control" placeholder="Phone Number">
+			</div>
+			<div class="form-group">
+				<label for="address">Address:</label>
+				<span class="required">*</span>
+				<span class="error_message" id="address_error"></span>
+				<input type="text" name="address" id="address" class="form-control" placeholder="Address">
+			</div>
+
+			<input type="button" name="submit" class="btn btn-primary" value="Submit" id="submit">
+		</form>	
+	</div>
+
+	<script type="text/javascript" 
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+    	$(document).ready(function() {
+    		$('#submit').click(function() {
+    			// taking the value of input feilds using val()
+    		
+    			var name = $('#name').val();
+    			var email = $('#email').val();
+    			var username = $('#username').val();
+    			var password = $('#password').val();
+    			var confirm_password = $('#confirm_password').val();
+    			var phone_no = $('#phone_no').val();
+    			var address = $('#address').val();
+
+    			// pattern / rules of writing name, email, phone_no,etc.
+    			
+    			var name_pattern = /^[A-Za-z ]{0,70}$/i;
+    			var email_pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    			var phone_pattern = /^[0-9]{10,13}$/i;
+
+    			//name
+    			if($.trim(name) == "") {
+    				$('#name_error').fadeIn().html("Please Enter Name");
+    				setTimeout(function() {
+    					$("#name_error").fadeOut();
+    				}, 3000);
+    				$('#name').focus();
+    				return false;
+    			} else if(!name_pattern.test(name)) {
+    				$('#name_error').fadeIn().html('Please enter valid name');
+    				setTimeout(function() {
+    					$('#name_error').fadeOut();
+    				}, 3000);
+    				$('#name').focus();
+    				return false;
+    			}
+
+    			//email
+    			if($.trim(email) == "") {
+    				$('#email_error').fadeIn().html('Please Enter Email');
+    				setTimeout(function() {
+    					$('#email_error').fadeOut();
+    				}, 3000);
+    				$('#email').focus();
+    				return false;
+    			} else if(!email_pattern.test(email)) {
+    				$('#email_error').fadeIn().html('Please enter valid email');
+    				setTimeout(function() {
+    					$('#email_error').fadeOut();
+    				}, 3000);
+    				$('#email').focus();
+    				return false;
+    			}
+
+    			//username
+    			if($.trim(username) == "") {
+    				$('#username_error').fadeIn().html("Please Enter Username");
+    				setTimeout(function() {
+    					$("#username_error").fadeOut();
+    				}, 3000);
+    				$('#username').focus();
+    				return false;
+    			}
+
+    			//password
+    			if($.trim(password) == "") {
+    				$('#password_error').fadeIn().html("Please Enter Password");
+    				setTimeout(function() {
+    					$("#password_error").fadeOut();
+    				}, 3000);
+    				$('#password').focus();
+    				return false;
+    			}
+    			
+    			//confirm password
+    			if($.trim(confirm_password) == "") {
+    				$('#confirm_password_error').fadeIn().html("Please Enter Confirm Password");
+    				setTimeout(function() {
+    					$("#confirm_password_error").fadeOut();
+    				}, 3000);
+    				$('#confirm_password').focus();
+    				return false;
+    			}
+
+    			//phone number
+    			if($.trim(phone_no) == "") {
+    				$('#phone_error').fadeIn().html('Please Enter Phone number');
+    				setTimeout(function() {
+    					$('#phone_error').fadeOut();
+    				}, 3000);
+    				$('#phone_no').focus();
+    				return false;
+    			} else if(!phone_pattern.test(phone_no)) {
+    				$('#phone_error').fadeIn().html('Please enter valid phone number');
+    				setTimeout(function() {
+    					$('#phone_error').fadeOut();
+    				}, 3000);
+    				$('#phone_no').focus();
+    				return false;
+    			}
+
+    			//address
+    			if($.trim(address) == "") {
+    				$('#address_error').fadeIn().html('Please Enter Address');
+    				setTimeout(function() {
+    					$('#address_error').fadeOut();
+    				}, 3000);
+    				$('#address').focus();
+    				return false;
+    			}
+
+    			//disable the button after clicking 
+				if(password === confirm_password) {
+                    $('#submit').attr('disabled', 'disabled');
+                    /*console.log(name);
+
+                    var name = $('#name').val();
+                    var email = $('#email').val();
+                    var username = $('#username').val();
+                    var password = $('#password').val();
+                    var confirm_password = $('#confirm_password').val();
+                    var phone_no = $('#phone_no').val();
+                    var address = $('#address').val();*/
+
+                    $.ajax({
+                        url : "addStudent.php",
+                        type : "POST",
+                        data : {
+                            name : name,
+                            email : email,
+                            username : username,
+                            password: password,
+                            confirm_password : confirm_password,
+                            phone_no : phone_no,
+                            address : address
+                        },
+                        cache : false,
+                        success : function(response) {
+                            alert(response);
+                            document.location.href = 'login.html';
+                            
+                        }
+                    });
+                } else {
+                    alert('Password does not match');
+                }
+    		});
+    	});
+    </script>
+
+</body>
+</html>
