@@ -1,10 +1,10 @@
 <?php 
 session_start();
 include 'db_connect.php';
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = $_POST['tusername'];
+$password = $_POST['tpassword'];
 
-$query = "select * from student_registration where username = '$username' and password = '$password' ";
+$query = "select * from teacher_info where username = '$username' and password = '$password' ";
 
 $result = mysqli_query($con, $query);
 $userdata = $result -> fetch_assoc();
@@ -13,16 +13,14 @@ if(is_array($userdata) && !empty($userdata)) {
 	$_SESSION['valid'] = $validuser;
 	$_SESSION['name'] = $userdata['name'];
 	$_SESSION['id'] = $userdata['id'];
-	if($userdata['username'] === $username and $userdata['password'] === $password) {
+	if($validuser === $username and $userdata['password'] === $password) {
 		echo ($validuser . " logged in successfully");
 	}
 } else {
-	echo ('Invalid Username or Password. Please do Sign Up!');
+	echo json_encode('Invalid Username or Password. Please do Sign Up!');
 }
-/*if(isset($_SESSION['valid'])) {
-	header("Location : view.php");
-}*/
-/*if($userdata['username'] === $username and $userdata['password'] === $password) {
+/*
+if($userdata['username'] === $username and $userdata['password'] === $password) {
 	echo json_encode("Login Successfull");
 } else if($userdata['username'] !== $username and $userdata['password'] === $password) {
 	echo json_encode("Username is incorrect");

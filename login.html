@@ -9,6 +9,7 @@
 </head>
 <body>
 	<div class="container">
+		<p></p>
 		<h1 class="text-primary">Student Sign In</h1>
 		<br><br>
 		<form method="post" name="signin">
@@ -52,6 +53,7 @@
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() {
+			//student Sign in
 			$('#signin').click(function() {
 				var username = $('#username').val();
 				var password = $('#password').val();
@@ -86,12 +88,59 @@
 					},
 					cache : false,
 					success : function(data) {
-						if(data === "Login Successfull") {
+						if(data == username + " logged in successfully") {
 							alert(data);
+							document.location.href = "profile.php";
+						} else {
+							alert(data);
+							document.location.href = "addStudent.html";
+						}
+					}
+				});
+			});
+
+
+			//teacher Sign in
+			$('#teacher_signin').click(function() {
+				var tusername = $('#tusername').val();
+				var tpassword = $('#tpassword').val();
+
+				//validate username
+				if($.trim(tusername) == "") {
+					$('#tusername_error').fadeIn().html("Enter the Username");
+					setTimeout(function() {
+						$('#tusername_error').fadeOut();
+					}, 3000);
+					$('#tusername').focus();
+					return false;
+				}
+
+				//validate password
+				if($.trim(tpassword) == "") {
+					$('#tpassword_error').fadeIn().html("Enter the Password");
+					setTimeout(function() {
+						$('#tpassword_error').fadeOut();
+					}, 3000);
+					$('#tpassword').focus();
+					return false;
+				}
+
+				$('#teacher_signin').attr("disabled", "disabled");
+				$.ajax({
+					url : 'teacher_login.php',
+					type : 'POST',
+					data : {
+						tusername : tusername,
+						tpassword : tpassword
+					},
+					cache : false,
+					success : function(data) {
+						if(data == tusername + " logged in successfully") {
+							alert(data);
+							document.location.href = 'teacher_profile.php';
 						}
 						alert(data);
-						
-						/*document.location(href : 'profile.html');*/
+						document.location.href = 'login.html';
 					}
 				});
 			});

@@ -1,7 +1,7 @@
 create database if not exists student_management_system;
 
 create table student_management_system.student_registration (
-id int unsigned NOT NULL AUTO_INCREMENT,
+id MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
 name varchar(100) NOT NULL,
 email varchar(200) NOT NULL,
 username varchar(100) NOT NULL,
@@ -36,6 +36,44 @@ INSERT INTO `student_management_system`.`teacher_info` (`name`, `email`, `userna
 select * from student_management_system.student_registration;
 select * from student_management_system.teacher_info;
 
-select u.* from student_management_system.student_registration AS u join student_management_system.teacher_info AS c ON u.id = c.id where u.email = 'sawarkar_prachi.ghrcecs@raisoni.net';
+CREATE TABLE `student_management_system`.`add_course` ( 
+`id` MEDIUMINT(8) NOT NULL AUTO_INCREMENT , 
+`name` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL , 
+`summary` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL , 
+`start_date` DATE NOT NULL ,
+`end_date` DATE NOT NULL , 
+created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+status varchar(100) collate utf8mb4_unicode_ci DEFAULT 1,
+PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT = 1;
 
+
+INSERT INTO `student_management_system`.`add_course` (`name`, `summary`, `start_date`, `end_date`, `status`) VALUES ('React Native', 'It is used for cross-development app development', '2020-05-30', '2020-06-30', '1');
+
+select * from `student_management_system`.`add_course`;
+
+
+CREATE TABLE `student_management_system`.`student_my_courses` ( 
+`id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT , 
+student_id MEDIUMINT(8) UNSIGNED NOT NULL, 
+`name` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL , 
+`summary` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL , 
+`start_date` DATE NOT NULL ,
+`end_date` DATE NOT NULL , 
+created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+status varchar(100) collate utf8mb4_unicode_ci DEFAULT 1,
+PRIMARY KEY (`id`),
+constraint `sms_student_my_course_id` foreign key (student_id) references student_registration(id)
+) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT = 1;
+
+select * from `student_management_system`.`student_my_courses`;
+
+
+INSERT INTO `student_management_system`.`student_my_courses` (`student_id`, `name`, `summary`, `start_date`, `end_date`) VALUES ('2', 'React Native', 'It is used for cross-platform app development', '2020-05-30', '2020-06-30');
+
+drop table `student_management_system`.`student_my_courses`;
 drop table student_management_system.student_registration;
+
+select * from `student_management_system`.student_registration sr inner join `student_management_system`.student_my_courses sc on sr.id = sc.student_id where sr.id = 1 and sc.id = 2;
