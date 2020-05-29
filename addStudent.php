@@ -8,6 +8,19 @@
 	$phone_no = $_POST['phone_no'];
 	$address = $_POST['address'];
 
+	/*$target_dir = "uploads/";
+	$target_file = $target_dir . basename($_FILES['image']['name']);
+	$uploadOk = 1;
+	$imageFileType = strToLower(pathinfo($target_file, PATHINFO_EXTENSION));
+	$extension = array('gif', 'png', 'jpg', 'jpeg');
+	if(!in_array($imageFileType, $extension)) {
+		echo "Image file type is not supported.";
+		header("Location : addStudent.html");
+		$uploadOk = 0;
+	}
+	$file = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));
+	echo $file;*/
+
 	/*if($password !== $confirm_password) {
 		array_push($errors, "Password does not match");
 	}*/

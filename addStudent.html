@@ -10,7 +10,7 @@
 <body>
 	<div class="container">
         <h1 class="text-primary">Student Registration</h1>
-		<form method="post" name="student_signup">
+		<form method="post" name="student_signup" action="" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="name">Name:</label>
 				<span class="required">*</span>
@@ -54,6 +54,13 @@
 				<input type="text" name="address" id="address" class="form-control" placeholder="Address">
 			</div>
 
+            <!-- <div class="form-group">
+                <label for="image">Upload Profile Image</label>
+                <span class="required">*</span>
+                <span class="error_message" id="image_error"></span>
+                <input type="file" name="image" id="image" class="form-control" placeholder="Profile image">
+            </div> -->
+
 			<input type="button" name="submit" class="btn btn-primary" value="Submit" id="submit">
 		</form>	
 	</div>
@@ -65,7 +72,7 @@
     	$(document).ready(function() {
     		$('#submit').click(function() {
     			// taking the value of input feilds using val()
-    		
+                
     			var name = $('#name').val();
     			var email = $('#email').val();
     			var username = $('#username').val();
@@ -73,7 +80,7 @@
     			var confirm_password = $('#confirm_password').val();
     			var phone_no = $('#phone_no').val();
     			var address = $('#address').val();
-
+                //var image = $('#image').val();
     			// pattern / rules of writing name, email, phone_no,etc.
     			
     			var name_pattern = /^[A-Za-z ]{0,70}$/i;
@@ -171,10 +178,19 @@
     				return false;
     			}
 
+                /*if($.trim(image) == "") {
+                    $('#image_error').fadeIn().html('Please upload the image');
+                    setTimeout(function() {
+                        $('#image_error').fadeOut();
+                    }, 3000);
+                    $('#image').focus();
+                    return false;
+                }*/
+
     			//disable the button after clicking 
 				if(password === confirm_password) {
                     $('#submit').attr('disabled', 'disabled');
-                    /*console.log(name);
+                    console.log(name);
 
                     var name = $('#name').val();
                     var email = $('#email').val();
@@ -182,27 +198,34 @@
                     var password = $('#password').val();
                     var confirm_password = $('#confirm_password').val();
                     var phone_no = $('#phone_no').val();
-                    var address = $('#address').val();*/
+                    var address = $('#address').val();
+                    //var image = $("#image").val();
 
-                    $.ajax({
-                        url : "addStudent.php",
-                        type : "POST",
-                        data : {
-                            name : name,
-                            email : email,
-                            username : username,
-                            password: password,
-                            confirm_password : confirm_password,
-                            phone_no : phone_no,
-                            address : address
-                        },
-                        cache : false,
-                        success : function(response) {
-                            alert(response);
-                            document.location.href = 'login.html';
-                            
-                        }
-                    });
+                    /*var extension = $("#image").val().split('.').pop().toLowerCase();
+                    if(jQuery.inArray(extension, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                        alert("Invalid image file");
+                    } else {*/
+                        $.ajax({
+                            url : "addStudent.php",
+                            type : "POST",
+                            data : {
+                                name : name,
+                                email : email,
+                                username : username,
+                                password: password,
+                                confirm_password : confirm_password,
+                                phone_no : phone_no,
+                                address : address,
+                                //image : image 
+                            },
+                            cache : false,
+                            success : function(response) {
+                                alert(response);
+                                document.location.href = 'login.html';
+                                
+                            }
+                        });
+                    /*}*/
                 } else {
                     alert('Password does not match');
                 }

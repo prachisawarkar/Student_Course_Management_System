@@ -9,6 +9,7 @@ password varchar(25) NOT NULL,
 confirm_password varchar(25) NOT NULL,
 phone_no varchar(50),
 address varchar(300) NOT NULL,
+#image longtext NOT NULL,
 created timestamp,
 modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 status varchar(100) collate utf8mb4_unicode_ci DEFAULT 1,
@@ -35,6 +36,9 @@ INSERT INTO `student_management_system`.`teacher_info` (`name`, `email`, `userna
 
 select * from student_management_system.student_registration;
 select * from student_management_system.teacher_info;
+
+DELETE from student_management_system.student_registration where id = 1;
+
 
 CREATE TABLE `student_management_system`.`add_course` ( 
 `id` MEDIUMINT(8) NOT NULL AUTO_INCREMENT , 
@@ -65,15 +69,32 @@ created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 status varchar(100) collate utf8mb4_unicode_ci DEFAULT 1,
 PRIMARY KEY (`id`),
-constraint `sms_student_my_course_id` foreign key (student_id) references student_registration(id)
+constraint `sms_student_my_course_id` foreign key (student_id) references student_registration(id) ON DELETE CASCADE
 ) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT = 1;
 
 select * from `student_management_system`.`student_my_courses`;
 
+select * from `student_management_system`.student_registration sr inner join `student_management_system`.student_my_courses sc on sr.id = sc.student_id where sr.id = 1 and sc.id = 2;
 
-INSERT INTO `student_management_system`.`student_my_courses` (`student_id`, `name`, `summary`, `start_date`, `end_date`) VALUES ('2', 'React Native', 'It is used for cross-platform app development', '2020-05-30', '2020-06-30');
-
-drop table `student_management_system`.`student_my_courses`;
+drop table student_management_system.student_my_courses;
 drop table student_management_system.student_registration;
 
-select * from `student_management_system`.student_registration sr inner join `student_management_system`.student_my_courses sc on sr.id = sc.student_id where sr.id = 1 and sc.id = 2;
+
+
+select * from student_management_system.add_course;
+select * from student_management_system.add_course where id  = 1;
+
+
+
+CREATE TABLE IF NOT EXISTS login.`tbl_images` (
+  `id` int(11) NOT NULL,
+  `name` longblob NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE login.`tbl_images`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE login.`tbl_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;

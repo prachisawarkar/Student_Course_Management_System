@@ -47,7 +47,7 @@ $result = mysqli_query($con, $query);
 								<input type="email" name="email" value="<?php echo $row['email']; ?>" >
 							</td>
 							<td>
-								<input type="text" name="phone_no_id" onchange="return autosave(this.id, this.val)" id="<?php echo $row['id'] ?>" value="<?php echo $row['phone_no'] ?>" >
+								<input type="text" name="phone_no" value="<?php echo $row['phone_no'] ?>" >
 							</td>
 							<td>
 								<input type="text" name="address" value="<?php echo $row['address'] ?>" >
@@ -89,35 +89,10 @@ $result = mysqli_query($con, $query);
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
 	<script type="text/javascript">
-		function autosave(id,val) {
-			$id = id;
-			var phone_no_id = id;
-			$val = val;
-			var phone_no_val = val;
-			console.log($id);
-			console.log($val);
-			/*var email = $("#email").val();
-			var phone_no = $("#phone_no").val();*/
-
-			$.ajax({
-				url : "autosave_data.php",
-				method : "POST",
-				data : {
-					phone_no_id : phone_no_id,
-					/*email : email,
-					phone_no : phone_no*/
-					phone_no_val : phone_no_val
-				},
-				success : function(data) {
-					//$('p').append(data);
-					alert(data);
-				}
-			});
-		}
-
 		function on_click(id) {
 			$id = id;
 			var delete_id = id;
+			console.log($id);
 			$.ajax({
 				type : "POST",
 				url : "student_delete.php",
@@ -139,6 +114,7 @@ $result = mysqli_query($con, $query);
 			$id = id;
 			var status_id = id; 
 			/*alert($(this).attr('id'));*/
+			console.log($id);
 			$.ajax({
 				url : "toggleStatus.php",
 				type : "POST",

@@ -48,7 +48,7 @@ $row = $result -> fetch_assoc();
                         </a>
                     </li>
                     <li class="navbar-item mr-4 mb-1">
-                        <a class="navbar-link" href="resume.html#education">
+                        <a class="navbar-link" href="student_courses.php">
                             <button type="button" class='btn-outline-primary rounded'>Courses</button>
                         </a>
                     </li>
