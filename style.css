@@ -21,3 +21,10 @@
 /* #summary {
 	display: none;
 } */
+
+.registration {
+	background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url("backg1.jpg");
+	background-size: cover;
+	z-index: 1;
+	background-repeat: no-repeat;
+}

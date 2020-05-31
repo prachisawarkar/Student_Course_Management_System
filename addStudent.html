@@ -6,8 +6,19 @@
 	<title>Student Registration</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
+    
+    <style>
+        .registration {
+            background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url("bgimage.jpg");
+            background-size: cover;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px;
+        }
+    </style>
 </head>
-<body>
+<body class="registration">
 	<div class="container">
         <h1 class="text-primary">Student Registration</h1>
 		<form method="post" name="student_signup" action="" enctype="multipart/form-data">
@@ -61,8 +72,14 @@
                 <input type="file" name="image" id="image" class="form-control" placeholder="Profile image">
             </div> -->
 
-			<input type="button" name="submit" class="btn btn-primary" value="Submit" id="submit">
+			<input type="button" name="submit" class="btn btn-primary mb-3" value="Submit" id="submit">
 		</form>	
+        <p style="font-size: 18px;">
+            <span class="text-danger">Already have an account?</span> 
+            <a href="login.html">
+                <span class="text-primary">Sign In</span>
+            </a>
+        </p>
 	</div>
 
 	<script type="text/javascript" 

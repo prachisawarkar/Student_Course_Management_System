@@ -6,8 +6,18 @@
 	<title>Login</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+        .login {
+            background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)) , url("bgimage.jpg") ;
+            background-size: cover;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px;
+        }
+    </style>
 </head>
-<body>
+<body class="login">
 	<div class="container">
 		<p></p>
 		<h1 class="text-primary">Student Sign In</h1>
@@ -25,7 +35,7 @@
 				<span class="error_message" id="password_error"></span>
 				<input type="password" name="password" id="password" class="form-control" placeholder="Password">
 			</div>
-			<input type="button" name="signin" class="btn btn-primary" value="Sign in" id="signin">
+			<input type="button" name="signin" class="btn btn-primary mb-5" value="Sign in" id="signin">
 		</form>
 	</div>
 

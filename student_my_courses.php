@@ -66,11 +66,11 @@ $result1 = mysqli_query($con, $expired_courses);*/
 	<h1 class="text-primary">My Courses</h1>
 	<?php
 	/*echo date('yy-m-d');*/ 
-
 	while($row = mysqli_fetch_array($result)) {
-		if($row['start_date'] >= date('yy-m-d')) { ?>
+		if($row['start_date'] >= date('yy-m-d') && $row['status'] == 1) { ?>
 			<div class="row border">
 				<div class="col-md-8">
+					<?php echo $row['status']; ?>
 					<h3> <?php echo $row['name'] ?> </h3>
 					<p> <?php echo $row['summary'] ?> </p>
 					<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
@@ -79,7 +79,7 @@ $result1 = mysqli_query($con, $expired_courses);*/
 					<input type="button" name="enroll_now" value="ENROLLED" class="btn btn-primary mb-3">
 				</div>
 			</div>
-		<?php } else { ?>
+		<?php } else if($row['start_date'] >= date('yy-m-d') && $row['status'] == 0) { ?>
 			<div class="row border disabled">
 				<div class="col-md-8">
 					<h3> <?php echo $row['name'] ?> </h3>
@@ -92,24 +92,6 @@ $result1 = mysqli_query($con, $expired_courses);*/
 			</div>
 		<?php }
 	} ?>
-
-
-
-	<!-- <?php
-	while($row1 = mysqli_fetch_array($result1)) {
-		if($row1['start_date'] < date('yy-m-d')) { ?>
-			<div class="row border disabled">
-				<div class="col-md-8">
-					<h3> <?php echo $row1['name'] ?> </h3>
-					<p> <?php echo $row1['summary'] ?> </p>
-					<p> <?php echo $row1['start_date'] . " to " . $row1['end_date'] ?> </p>
-				</div>
-				<div class="col-md-4">
-					<input type="button" name="enroll_now" value="ENROLLED" class="btn btn-primary mb-3" disabled="true">
-				</div>
-			</div>
-		<?php } 
-	}
-	?> -->
+	
 </body>
 </html>

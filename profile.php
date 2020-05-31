@@ -33,9 +33,29 @@ echo $row['address']."<br>";*/
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        .top_section {
+            background-color: #293946 ;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px;
+        }
+        body {
+            background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url("bgimage.jpg");
+            background-size: cover;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px;
+        }
+        .info {
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container top_section">
 		<nav class="navbar navbar-expand-lg navbar-light text-center">
             <a class="navbar-brand mr-4 text-" href="#"> <h1 class="text-primary"><?php echo $_SESSION['name'] ?></h1> </a>
             <button class="navbar-toggler" type="button" data-toggle = 'collapse' data-target = '#navbarTogglerDemo1' aria-controls = 'navbarTogglerDemo1'aria-expanded = 'false' aria-label = 'Toggle navigation'>
@@ -68,15 +88,16 @@ echo $row['address']."<br>";*/
                 
             </div>
         </nav>
-
+    </div>
         <!-- profile page -->
-
+    <div class="container">
         <div class="row border">
             <div class="col-md-3">
                 <label class="text-primary"><h4>Name: </h4></label>
             </div>
             <div class="col-md-8">
-                <input type="text" name="name" id="name" value = "<?php echo $row['name'] ?>" class="border-0">
+                <!-- <input type="text" name="name" id="name" value = "<?php echo $row['name'] ?>" class="border-0"> -->
+                <p class="info"><?php echo $row['name'] ?></p>
             </div>
         </div>
         <div class="row border">
@@ -84,7 +105,7 @@ echo $row['address']."<br>";*/
                 <label class="text-primary"><h4>Email Id: </h4></label>
             </div>
             <div class="col-md-8">
-                <p><?php echo $row['email'] ?></p>
+                <p class="info"><?php echo $row['email'] ?></p>
             </div>
         </div>
         <div class="row border">
@@ -92,7 +113,8 @@ echo $row['address']."<br>";*/
                 <label class="text-primary"><h4>Username: </h4></label>
             </div>
             <div class="col-md-8">
-                <input type="text" name="username" id="username" value = "<?php echo $row['username'] ?>" class="border-0">
+                <!-- <input type="text" name="username" id="username" value = "<?php echo $row['username'] ?>" class="border-0"> -->
+                <p class="info"><?php echo $row['username'] ?></p>
             </div>
         </div>
         <div class="row border">
@@ -100,7 +122,7 @@ echo $row['address']."<br>";*/
                 <label class="text-primary"><h4>Phone Number: </h4></label>
             </div>
             <div class="col-md-8">
-                <p><?php echo $row['phone_no'] ?></p>
+                <p class="info"><?php echo $row['phone_no'] ?></p>
             </div>
         </div>
         <div class="row border">
@@ -108,7 +130,8 @@ echo $row['address']."<br>";*/
                 <label class="text-primary"><h4>Address: </h4></label>
             </div>
             <div class="col-md-8">
-                <input type="text" name="address" id="address" value = "<?php echo $row['address'] ?>" class="border-0">
+                <!-- <input type="text" name="address" id="address" value = "<?php echo $row['address'] ?>" class="border-0"> -->
+                <p class="info"><?php echo $row['address'] ?></p>
             </div>
         </div>
         <div class="row border">
@@ -116,11 +139,11 @@ echo $row['address']."<br>";*/
                 <label class="text-primary"><h4>Joining Date & Time: </h4></label>
             </div>
             <div class="col-md-8">
-                <p><?php echo $row['created'] ?></p>
+                <p class="info"><?php echo $row['created'] ?></p>
             </div>
         </div>
         <br>
-        <input type="button" name="save" class="btn btn-outline-primary" id="save" value="SAVE">
+        <!-- <input type="button" name="save" class="btn btn-outline-primary" id="save" value="SAVE"> -->
 
 	</div>
 

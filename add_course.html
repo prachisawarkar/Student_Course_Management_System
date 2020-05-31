@@ -10,7 +10,7 @@
 <body>
 	<div class="container">
 		<h1>Add Courses</h1>
-		<form method="post" action="echo $_SERVER['PHP_SELF']" name="course_form">
+		<form method="post" action="add_coursefile.php" name="course_form" id="course_add_form" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="course_name">Name of the course
 				</label>
@@ -45,12 +45,16 @@
 				<span class="error_message" id="end_date_error"></span>
 				<input type="date" name="end_date" id="end_date" placeholder="End date" class="form-control">
 			</div>
+			<div class="form-group">
+				<label for="notes">Upload Notes</label>
+				<input type="file" name="notes" id="notes" class="form-control" multiple>
+			</div>
 			<br>
-			<input type="button" name="add" value="ADD" id="add" class="btn btn-primary">
+			<input type="submit" name="add" value="ADD" id="add" class="btn btn-primary">
 
 		</form>
 	</div>
-	<script type="text/javascript" 
+	<!-- <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
 	<script type="text/javascript">
@@ -60,6 +64,7 @@
 				var summary = $('#summary').val();
 				var start_date = $('#start_date').val();
 				var end_date = $('#end_date').val();
+				var file = $('#notes').val();
 
 				if($.trim(name) == '') {
 					$('#course_name_error').fadeIn().html("Please Enter the Course name");
@@ -97,23 +102,26 @@
 					return false;
 				}
 
-				$('#add').attr('disabled', 'disabled');
+				/*var data = $('form').serialize();*/
+
+				/*$('#add').attr('disabled', 'disabled');
 				$.ajax({
-					url : 'add_course.php',
+					url : 'add_coursefile.php',
 					type : "POST",
 					data : {
 						name : name,
 						summary : summary,
 						start_date : start_date,
 						end_date : end_date
-					},
+						notes : notes
+					} $('#course_add_form').serialize(),
 					success : function(data) {
 						alert(data);
-						document.location.href = "add_course.html";
+						document.location.href = "add_course.php";
 					}
-				});
+				});*/
 			});
 		});
-	</script>
+	</script> -->
 </body>
 </html>

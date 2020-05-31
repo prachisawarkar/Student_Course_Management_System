@@ -1,9 +1,9 @@
 <?php
 
-session_start();
+/*session_start();
 if(!isset($_SESSION['valid'])) {
 	header("Location : login.html");
-}
+}*/
 
 include "db_connect.php";
 $query = "select * from add_course";
@@ -28,7 +28,9 @@ $result = mysqli_query($con, $query);
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
 </head>
 <body>
-	<button class="btn btn-lg btn-primary fixed-top mb-5">ADD COURSES</button>
+	<a href="add_course.html">
+		<button class="btn btn-lg btn-primary fixed-top mb-5">ADD COURSES</button>
+	</a>
 
 	<form action="created_course.php" method="post" id="created_courses" class="mt-5">
 		<table style="border : 1px solid black">
@@ -66,10 +68,15 @@ $result = mysqli_query($con, $query);
 								<input type="text" name="status" value="<?php echo $row['status'] ?>">
 							</td>
 							<td>
-								<button>
+								<!-- <button type="button" onclick="return enrolled_students(this.id)" id="<?php echo $row['id']; ?>">
 									<img src="bag.png" alt="bag" width="25px" height="25px">
-								</button>	
-								<input type="button" name="delete_id" class="btn btn-sm btn-primary" value="DELETE">
+								</button> -->
+								<?php
+								echo "<a href=\"course_enrolled_students.php?id=$row[id]\">"; ?>
+									<img src="bag.png" alt="bag" width="25px" height="25px">
+								<?php echo "</a>";
+								?>	
+								<input type="button" id="<?php echo $row['id']; ?>" name="delete_id" class="btn btn-sm btn-primary" value="DELETE" onclick="delete_course(this.id)">
 							</td>
 
 						</tr>
@@ -79,5 +86,45 @@ $result = mysqli_query($con, $query);
 			</tbody>
 		</table>
 	</form>
+
+	<!-- <script type="text/javascript" 
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+    </script>
+	<script  type="text/javascript">
+		function delete_course(id) {
+			var course_id = id;
+			$.ajax({
+				url : "delete_course.php",
+				method : 'POST',
+				data : {
+					course_id : course_id
+				},
+				success : function(data) {
+					if(data == 1) {
+						alert("Course not deleted. Please try again...");
+					} else {
+						confirm("Are you sure you want to delete?");
+						alert(data);
+						$("#created_courses").load("created_courses.php");
+					}
+				}
+			});
+		}
+
+		function enrolled_students(id) {
+			var course_id = id;
+			console.log(id);
+			$.ajax({
+				url : "course_enrolled_students.php",
+				method : "POST",
+				data : {
+					course_id : course_id
+				},
+				success : function(data) {
+					alert(data);
+				}
+			})
+		}
+	</script> -->
 </body>
 </html>
