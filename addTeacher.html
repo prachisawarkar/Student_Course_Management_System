@@ -7,20 +7,10 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style.css">
     
-    <style>
-        .registration {
-            background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url("bgimage.jpg");
-            background-size: cover;
-            z-index: 1;
-            background-repeat: no-repeat;
-            margin-top :  100px;
-            margin-bottom: 100px;
-        }
-    </style>
 </head>
-<body class="registration">
+<body style="background-color: black; color: white;" >
 	<div class="container">
-        <h1 class="text-primary">Student Registration</h1>
+        <h1 class="text-primary">Teacher Registration</h1>
 		<form method="post" name="student_signup" action="" enctype="multipart/form-data">
 			<div class="form-group"> <!-- name -->
 				<label for="name">Name:</label>
@@ -64,7 +54,7 @@
 				<span class="error_message" id="address_error"></span> <!-- to show the error -->
 				<input type="text" name="address" id="address" class="form-control" placeholder="Address">
 			</div>
-            <!-- button to submit the form -->
+            <!-- button to submit the data -->
 			<input type="button" name="submit" class="btn btn-primary mb-3" value="Submit" id="submit">
 		</form>	
         <p style="font-size: 18px;">
@@ -81,7 +71,7 @@
     <script type="text/javascript">
     	$(document).ready(function() {
     		$('#submit').click(function() {
-    			// taking the value of input fields using val()
+    			// taking the value of input feilds using val()
                 
     			var name = $('#name').val();
     			var email = $('#email').val();
@@ -90,7 +80,6 @@
     			var confirm_password = $('#confirm_password').val();
     			var phone_no = $('#phone_no').val();
     			var address = $('#address').val();
-    			// pattern/rules of writing name, email, phone_no,etc.
     			
     			var name_pattern = /^[A-Za-z ]{0,70}$/i;
     			var email_pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -186,9 +175,9 @@
     				$('#address').focus();
     				return false;
     			}
- 
+
+    			//disable the button after clicking 
 				if(password === confirm_password) {
-                    //disable the button after clicking
                     $('#submit').attr('disabled', 'disabled');
                     console.log(name);
 
@@ -201,7 +190,7 @@
                     var address = $('#address').val();
 
                     $.ajax({
-                        url : "addStudent.php",
+                        url : "addTeacher.php",
                         type : "POST",
                         data : {
                             name : name,
@@ -214,10 +203,11 @@
                         },
                         cache : false,
                         success : function(response) {
-                            alert(response); //show the message
-                            document.location.href = 'login.html';
+                            alert(response); /*show the message*/
+                            document.location.href = 'login.html'; 
                         }
                     });
+                  
                 } else {
                     alert('Password does not match');
                 }

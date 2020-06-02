@@ -1,13 +1,18 @@
 <?php
 
 session_start();
+if(!isset($_SESSION['valid'])) {
+	header("Location : login.html");
+}
+//database connection file
 include "db_connect.php";
 
-$id = $_POST['course_id'];
-$delete_query = "delete from add_course where id = '$id'";
+$name = $_POST['course_id']; // get the course name 
+//delete query to delete the selected course
+$delete_query = "delete from add_course where name = '$name'";
 $result = mysqli_query($con, $delete_query);
-
-$query = "select * from add_course where id = '$id'";
+//check whether deleted or not
+$query = "select * from add_course where name = '$name'";
 $result1 = mysqli_query($con, $query);
 
 if(empty($query)) {

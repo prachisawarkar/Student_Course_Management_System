@@ -1,69 +1,70 @@
 <?php
 
-/*session_start();
+session_start();
 if(!isset($_SESSION['valid'])) {
 	header("LOcation : login.html");
-}*/
-
+}
+//database connection file
 include "db_connect.php";
-/*$course_id = $_POST['course_id'];*/
+//get the course id
 $course_id = $_GET['id'];
 
-/*$query = "select * from student_my_courses where course_id = '$course_id'";*/
+//select data to display the enrolled students in the selected course
 $query = "select sc.id as id, sr.name as name, sr.email as email, sr.username as username, sr.phone_no as phone_no, sc.status as status from student_registration sr join student_my_courses sc on sr.id = sc.student_id where course_id = '$course_id'";
 $result = mysqli_query($con, $query); 
 
 ?>
+<!-- enrolled students -->
 <div class="container" id="course_enrolled">
 	<?php
 	if(mysqli_num_rows($result) > 0) { ?>
-		<h2 class="text-primary">Enrolled Students : </h2>
+		<h2 class="text-primary" id="heading">Enrolled Students : </h2>
 		<form method="post" action="course_enrolled_students.php" id="course_enrolled_students">
 			<table>
 				<thead>
 					<tr>
-						<td class="border border-primary">
+						<td>
 							Id
 						</td>
-						<td class="border border-primary">
+						<td>
 							Name 
 						</td>
-						<td class="border border-primary">
+						<td>
 							Email
 						</td>
-						<td class="border border-primary">
+						<td>
 							Username
 						</td>
-						<td class="border border-primary">
+						<td>
 							Phone Number
 						</td>
-						<td class="border border-primary">
+						<td>
 							Status
 						</td>
 					</tr>
 				</thead>
 				<tbody>
 			<?php while($row = $result -> fetch_assoc()) { ?>
-					<tr>
-						<td class="border border-primary">
+					<tr> <!-- student information -->
+						<td>
 							<?php echo $row['id']; ?>
 						</td>
-						<td class="border border-primary">
+						<td>
 							<?php echo $row['name']; ?>
 						</td>
-						<td class="border border-primary">
+						<td>
 							<?php echo $row['email']; ?>
 						</td>
-						<td class="border border-primary">
+						<td>
 							<?php echo $row['username']; ?>
 						</td>
-						<td class="border border-primary">
+						<td>
 							<?php echo $row['phone_no']; ?>
 						</td>
 
 						<?php $status = $row['status']; ?> 
 
-						<td class="border border-primary">
+						<td> <!-- status of the course for the student -->
 							<button type="button" onclick = "return statusChange(this.id)" id="<?php echo $row['id'] ?>">
 								<?php 
 								if($status == 1) { ?>
@@ -81,7 +82,7 @@ $result = mysqli_query($con, $query);
 	<?php } else {
 		echo "No students have enrolled yet in this course";
 	} ?>
-</div>
+</div> 
 
 <!DOCTYPE html>
 <html>
@@ -90,13 +91,15 @@ $result = mysqli_query($con, $query);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title></title>
 	<link rel="stylesheet" href="">
-	<!-- Bootstrap CSS
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    // Optional JavaScript
-    // jQuery first, then Popper.js, then Bootstrap JS
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+	<style>
+		body {
+			background-color: black;
+			color: white;
+		}
+		tr {
+			border: 1px solid white;
+		}
+	</style>
 </head>
 <body>
 	<script type="text/javascript" 
@@ -114,8 +117,10 @@ $result = mysqli_query($con, $query);
 					status_id : status_id
 				},
 				success : function(data) {
-					alert(status_id + data);
-					window.location.reload();
+					alert(data);
+					/*window.location.reload();*/
+					$("#heading").hide();
+					$('#course_enrolled_students').load('#course_enrolled_students');
 				}
 			});
 		}		

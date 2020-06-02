@@ -2,7 +2,7 @@
 
 session_start();
 if(!isset($_SESSION['valid'])) {
-	header('Location : login.php');
+	header('Location : login.html');
 }
 
 include 'db_connect.php';
@@ -16,9 +16,6 @@ $row = $result -> fetch_assoc();
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Profile</title>
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Optional JavaScript -->
@@ -27,11 +24,11 @@ $row = $result -> fetch_assoc();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
-<body>
+<body style="background-color: black; color: white;">
 	<div class="container">
 		<nav class="navbar navbar-expand-lg navbar-light text-center">
             <a class="navbar-brand mr-4 text-" href="#"> <h1 class="text-primary"><?php echo $_SESSION['name'] ?></h1> </a>
-            <button class="navbar-toggler" type="button" data-toggle = 'collapse' data-target = '#navbarTogglerDemo1' aria-controls = 'navbarTogglerDemo1'aria-expanded = 'false' aria-label = 'Toggle navigation'>
+            <button class="navbar-toggler alert-light" type="button" data-toggle = 'collapse' data-target = '#navbarTogglerDemo1' aria-controls = 'navbarTogglerDemo1'aria-expanded = 'false' aria-label = 'Toggle navigation'>
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -64,20 +61,18 @@ $row = $result -> fetch_assoc();
 
         <!-- profile page -->
 
-        <div class="mt-5">
-        	<h5 class="border">Name : <?php echo $row['name'] ?></h5>
+        <div class="mt-5 text-justify">
+        	<h5>Name : <?php echo $row['name'] ?></h5>
         	<br>
-   			<h5 class="border">Email Id : <?php echo $row['email'] ?></h5>
+   			<h5>Email Id : <?php echo $row['email'] ?></h5>
    			<br>
-   			<h5 class="border">Username : <?php echo $row['username'] ?></h5>
+   			<h5>Username : <?php echo $row['username'] ?></h5>
+   			<br> 
+   			<h5>Phone Number : <?php echo $row['phone_no'] ?></h5>
    			<br>
-   			<!-- <h5 class="border">Password : <?php echo $row['password'] ?></h5> 
-   			<br> -->
-   			<h5 class="border">Phone Number : <?php echo $row['phone_no'] ?></h5>
+   			<h5>Address : <?php echo $row['address'] ?></h5>
    			<br>
-   			<h5 class="border">Address : <?php echo $row['address'] ?></h5>
-   			<br>
-   			<h5 class="border">Joining Date & Time : <?php echo $row['created'] ?></h5>
+   			<h5>Joining Date & Time : <?php echo $row['created'] ?></h5>
    			<br>
         </div>
 	</div>

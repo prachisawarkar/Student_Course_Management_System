@@ -3,11 +3,12 @@ session_start();
 if(!isset($_SESSION['valid'])) {
 	header("Location : login.html");
 }
+// database connection file
 include 'db_connect.php';
 
+//select and fetch the data of students from student_registration table
 $query = 'select * from student_registration';
 $result = mysqli_query($con, $query);
-/*$row = $result -> fetch_assoc();*/
 
 ?>
 
@@ -26,10 +27,11 @@ $result = mysqli_query($con, $query);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-light text-center">
+<body style="background-color: black; color: white;">
+	<!-- navigation bar -->
+	<nav class="navbar navbar-expand-lg navbar-light text-center" id="navbar">
         <a class="navbar-brand mr-4 text-" href="#"> <h1 class="text-primary"><?php echo $_SESSION['name'] ?></h1> </a>
-        <button class="navbar-toggler" type="button" data-toggle = 'collapse' data-target = '#navbarTogglerDemo1' aria-controls = 'navbarTogglerDemo1'aria-expanded = 'false' aria-label = 'Toggle navigation'>
+        <button class="navbar-toggler alert-light" type="button" data-toggle = 'collapse' data-target = '#navbarTogglerDemo1' aria-controls = 'navbarTogglerDemo1'aria-expanded = 'false' aria-label = 'Toggle navigation'>
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -59,6 +61,7 @@ $result = mysqli_query($con, $query);
             
         </div>
     </nav>
+    <!-- display the student data -->
 	<form action="student_info.php" method="post" accept-charset="utf-8" id="student_info">
 		<table style="border:1px solid:red">
 			<thead>
@@ -74,29 +77,31 @@ $result = mysqli_query($con, $query);
 				<?php 
 				$count = 0;
 				if($result->num_rows > 0) {
-					while($row = $result->fetch_assoc()) { ?>
+					while($row = $result->fetch_assoc()) { ?> <!-- fetch all the data of all the student -->
 						<tr class="">
-							<td>
+							<td> <!-- id of the student -->
 								<input type="text" name="id" value="<?php echo $row['id']; ?>" >
 							</td>
-							<td>
+							<td> <!-- name of the student -->
 								<input type="text" name="name" value="<?php echo $row['name']; ?>" >
 							</td>
-							<td>
+							<td> <!-- email of the student -->
+								<span class="error_message" id="email_error" style="color : red;"></span>
+								<!-- function called will save the data on getting change -->
 								<input type="text" name="email" class="email" id="<?php echo $row['id'] ?>" value="<?php echo $row['email'] ?>" onchange="return autosave_email(this.id, this.value)" >
 							</td>
-							<td>
-								<input type="text" name="phone_no" class="phone_no" id="<?php echo $row['id'] ?>" value="<?php echo $row['phone_no'] ?>" onchange="return autosave_phoneno(this.id, this.value)" >	
-								
-								
+							<td> <!-- phone number of the student -->
+								<span class="error_message" id="phone_error" style="color : red;"></span>
+								<!-- function called will save the data on getting change -->
+								<input type="text" name="phone_no" class="phone_no" id="<?php echo $row['id'] ?>" value="<?php echo $row['phone_no'] ?>" onchange="return autosave_phoneno(this.id, this.value)" >							
 							</td>
-							<td>
+							<td> <!-- address of the student -->
 								<input type="text" name="address" value="<?php echo $row['address'] ?>" >
 							</td>
-				
+							<!-- store the status in variable -->
 							<?php $status = $row['status']; ?> 
 
-							<td>
+							<td> <!-- status toggle on 1 - green and 0 - red -->
 								<button type="button" onclick = "return statusChange(this.id)" id="<?php echo $row['id'] ?>">
 									<?php 
 									if($status == 1) { ?>
@@ -107,7 +112,7 @@ $result = mysqli_query($con, $query);
 								</button>
 							</td>
 
-							<td>
+							<td> <!-- delete button to delete the student -->
 								<input type="button" name="delete_id" id="<?php echo $row['id'] ?>" value = "DELETE" onclick = "return on_click(this.id)">
 							</td>
 						</tr>
@@ -125,11 +130,31 @@ $result = mysqli_query($con, $query);
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
 	<script type="text/javascript">
+		//function to save the phone number
 		function autosave_phoneno(id,phone_no) {
 			var current_id = id;
 			var updated_phone_no = phone_no;
 			console.log(id);
 			console.log(phone_no);
+
+			// validate the phone number
+			var phone_pattern = /^[0-9]{10,13}$/i;
+			if($.trim(updated_phone_no) == "") {
+				$('#phone_error').fadeIn().html('Please Enter Phone number');
+				setTimeout(function() {
+					$('#phone_error').fadeOut();
+				}, 3000);
+				$('#phone_no').focus();
+				return false;
+			} else if(!phone_pattern.test(updated_phone_no)) {
+				$('#phone_error').fadeIn().html('Please enter valid phone number');
+				setTimeout(function() {
+					$('#phone_error').fadeOut();
+				}, 3000);
+				$('#phone_no').focus();
+				return false;
+			}
+
 			if('.phone_no' != '') {
 				$.ajax({
 					url : "autosave_stud_profile_data.php",
@@ -148,11 +173,33 @@ $result = mysqli_query($con, $query);
 			}
 		}
 
+		//function to save the email id
 		function autosave_email(id, email) {
+			//assign variables to parameter values
 			var current_id = id;
 			var updated_email_id = email;
 			console.log(id);
 			console.log(email);
+
+			// validate the email id
+			var email_pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+			if($.trim(updated_email_id) == "") {
+				$('#email_error').fadeIn().html('Please Enter Email');
+				setTimeout(function() {
+					$('#email_error').fadeOut();
+				}, 3000);
+				$('#email').focus();
+				return false;
+			} else if(!email_pattern.test(updated_email_id)) {
+				$('#email_error').fadeIn().html('Please enter valid email');
+				setTimeout(function() {
+					$('#email_error').fadeOut();
+				}, 3000);
+				$('#email').focus();
+				return false;
+			}
+
 			if('.email' != '') {
 				$.ajax({
 					url : "autosave_stud_profile_data.php",
@@ -175,20 +222,24 @@ $result = mysqli_query($con, $query);
 		function on_click(id) {
 			$id = id;
 			var delete_id = id;
-			$.ajax({
-				type : "POST",
-				url : "student_delete.php",
-				data : {delete_id : delete_id},
-				success : function(data) {
-					if(data == 1) {
-						alert("Student record not deleted");
-					} else {
-						confirm("Are you sure you want to delete ?");
-						//remove from the table
-						$('#student_info').load('student_info.php');
+			//confirm before deleting
+			if(confirm("Are you sure want to delete?")) {
+				//AJAX request
+				$.ajax({
+					type : "POST",
+					url : "student_delete.php",
+					data : {delete_id : delete_id},
+					success : function(data) {
+						if(data == 1) {
+							alert("Student record not deleted");
+						} else {
+							//to display the updated list without refreshing the page
+							$("#navbar").hide();
+							$('#student_info').load('student_info.php');
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 
 		// update status - active or inactive
@@ -204,6 +255,10 @@ $result = mysqli_query($con, $query);
 				},
 				success : function(data) {
 					alert(data);
+					/*$('#student_info').load('student_info.php');*/
+					/*window.location.reload();*/
+					/*document.location.href = 'student_info.php';*/
+					$("#navbar").hide();
 					$('#student_info').load('student_info.php');
 				}
 			});

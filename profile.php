@@ -4,17 +4,13 @@ session_start();
 if(!isset($_SESSION['valid'])) {
 	header('Location : login.php');
 }
-
+//database connection file
 include 'db_connect.php';
 
+//select the data of the id whose session is active
 $query = "select * from student_registration where id = " . $_SESSION['id'] ;
 $result = mysqli_query($con, $query);
-$row = $result -> fetch_assoc();
-
-/*echo $row['name']."<br>";
-echo $row['email']."<br>";
-echo $row['username']."<br>";
-echo $row['address']."<br>";*/
+$row = $result -> fetch_assoc(); //fetch data
 
 ?>
 <!DOCTYPE html>
@@ -23,9 +19,6 @@ echo $row['address']."<br>";*/
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Profile</title>
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Optional JavaScript -->
@@ -89,18 +82,18 @@ echo $row['address']."<br>";*/
             </div>
         </nav>
     </div>
-        <!-- profile page -->
+    <!-- profile page -->
     <div class="container">
-        <div class="row border">
+        <div class="row border"> <!-- name of the student -->
             <div class="col-md-3">
                 <label class="text-primary"><h4>Name: </h4></label>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8"> 
                 <!-- <input type="text" name="name" id="name" value = "<?php echo $row['name'] ?>" class="border-0"> -->
-                <p class="info"><?php echo $row['name'] ?></p>
+                <p class="info"><?php echo $row['name'] ?></p> 
             </div>
         </div>
-        <div class="row border">
+        <div class="row border"> <!-- email id of the student -->
             <div class="col-md-3">
                 <label class="text-primary"><h4>Email Id: </h4></label>
             </div>
@@ -108,7 +101,7 @@ echo $row['address']."<br>";*/
                 <p class="info"><?php echo $row['email'] ?></p>
             </div>
         </div>
-        <div class="row border">
+        <div class="row border"> <!-- username of the student -->
             <div class="col-md-3">
                 <label class="text-primary"><h4>Username: </h4></label>
             </div>
@@ -117,7 +110,7 @@ echo $row['address']."<br>";*/
                 <p class="info"><?php echo $row['username'] ?></p>
             </div>
         </div>
-        <div class="row border">
+        <div class="row border"> <!-- phone number of the student -->
             <div class="col-md-3">
                 <label class="text-primary"><h4>Phone Number: </h4></label>
             </div>
@@ -125,7 +118,7 @@ echo $row['address']."<br>";*/
                 <p class="info"><?php echo $row['phone_no'] ?></p>
             </div>
         </div>
-        <div class="row border">
+        <div class="row border"> <!-- address of the student -->
             <div class="col-md-3">
                 <label class="text-primary"><h4>Address: </h4></label>
             </div>
@@ -134,7 +127,7 @@ echo $row['address']."<br>";*/
                 <p class="info"><?php echo $row['address'] ?></p>
             </div>
         </div>
-        <div class="row border">
+        <div class="row border"> <!-- registration date and time -->
             <div class="col-md-3">
                 <label class="text-primary"><h4>Joining Date & Time: </h4></label>
             </div>
@@ -152,14 +145,14 @@ echo $row['address']."<br>";*/
     <script type="text/javascript">
         $(document).ready(function() {
             $('#save').click(function() {
-                /*function autosave() {*//*
-                    var id = $('#id').val();*/
-                    var name = $('#name').val();
+                /*function autosave() {*/
+                    //fetch the values of the input field
+                    var name = $('#name').val(); 
                     var username = $('#username').val();
                     var address = $('#address').val();
-                    console.log(name);
+                    /*console.log(name);
                     console.log(username);
-                    console.log(address);
+                    console.log(address);*/
                     $.ajax({
                         url : "edit_student_profile.php",
                         method : "POST",
@@ -169,13 +162,7 @@ echo $row['address']."<br>";*/
                             address : address
                         },
                         success : function(data) {
-                            /*if(data != '') {
-                                $('#id').val(data);
-                            }*/
                             alert(data);
-
-                            /*document.location.href = 'login.html';*/
-
                         }
                     });
                 /*);*/

@@ -9,10 +9,12 @@
 </head>
 <body>
 	<div>
+		<!-- availability for sign up -->
 		<a href="addStudent.html"> <h3>Sign Up</h3></a>
 		<hr>
+		<!-- availability for sign in -->
 		<a href="login.html"><h3>Sign In</h3></a>
-
+		<!-- thank you image -->
 		<img src="thankyou.jpg" alt="" class="img-thumbnail">
 	</div>
 </body>

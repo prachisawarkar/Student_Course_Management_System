@@ -1,24 +1,23 @@
 <?php
 
 session_start();
+// after login only you can enter inside if not then it will redirect to login
 if(!isset($_SESSION['valid'])) {
 	header("Location : login.html");
 }
 //database connection file
-include "db_connect.php";
-//select dara
-$query = "select * from add_course group by name order by id asc;";
-$result = mysqli_query($con, $query);
-
+include 'db_connect.php';
+$course_name = $_GET['course_name']; // get the course name 
+//query will fetch the data of the course name given
+$query = "select * from add_course where name = '$course_name'";
+$result = mysqli_query($con, $query); 
 ?>
+
 
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Courses</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Notes</title>
 	<!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Optional JavaScript -->
@@ -26,9 +25,17 @@ $result = mysqli_query($con, $query);
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+	<style>
+		body {
+			background-color: black;
+			color: white;
+		}
+		td {
+			border: 1px solid white;
+		}
+	</style>
 </head>
-<body style="background-color: black; color: white;">
+<body>
 	<div class="container">
 		<!-- navigation bar -->
 		<nav class="navbar navbar-expand-lg navbar-light text-center" id="navbar">
@@ -66,120 +73,109 @@ $result = mysqli_query($con, $query);
 	    </nav>
 	</div>
 	<div class="container">
-		<!-- button to add courses -->
-		<a href="add_course.php">
-			<button class="btn btn-lg btn-primary mb-5 add_course_btn">ADD COURSES</button>
+		<!-- button to add notes -->
+		<a href="#addNotes">
+			<button type="button" class="mb-5 btn btn-primary add_notes_btn"> ADD NOTES </button>
 		</a>
-		<!-- display all the added courses -->
-		<form action="created_course.php" method="post" id="created_courses">
-			<table style="border : 1px solid black;">
+
+		<!-- form to display the data on the screen -->
+		<form method="post">
+			<table id="notes" class="text-center">
 				<thead>
-					<th>Sr.No.</th>
-					<th>Name</th>
-					<th>Summary</th>
-					<th>Start date</th>
-					<th>End date</th>
-					<th>Status</th>
-					<th>Action</th>
-					<th>Notes</th>
+					<tr>
+						<th>
+							<input type="text" class="text-white h4" name="course_nm" style="background-color: black;" value="<?php echo $course_name ?>">
+						</th>
+					</tr>
+					<tr><!-- table headings -->
+						<th>File Name</th>
+						<th>Download</th>
+						<th>Delete</th>
+					</tr>
 				</thead>
 				<tbody>
 					<?php
-					if(mysqli_num_rows($result) > 0) { /* check the number of rows fetched by the result*/
-						while($row = $result -> fetch_assoc()) { ?>
+					// check the number of rows of sql query result 
+					if($result->num_rows > 0) { 
+						// fetch the rows
+						while($row = mysqli_fetch_array($result)) { ?>
 							<tr>
-								<td> <!-- id of the course -->
-									<input type="text" name="id" value="<?php echo $row['id'] ?>">
+								<td> <!-- file name -->
+									<input type="text" name="notes" class="text-white border-0" style="background-color: black;" value="<?php echo $row['notes'] ?>">
 								</td>
-								<td> <!-- name of the course -->
-									<input type="text" name="name" value="<?php echo $row['name'] ?>">
+								<td> <!-- download link -->
+									<a href="file_download.php?file_id=<?php echo $row['id'] ?>">Download</a>
 								</td>
-								<td> <!-- summary of the course -->
-									<input type="text" name="summary" value="<?php echo $row['summary'] ?>">
+								<td> <!-- button to delete the files -->
+									<input type="button" name="delete" value="DELETE" class="btn btn-outline-danger" id="<?php echo $row['notes'] ?>" onclick="return delete_note(this.id)">
 								</td>
-								<td> <!-- start date of the course -->
-									<input type="date" name="start_date" value="<?php echo $row['start_date'] ?>">
-								</td>
-								<td> <!-- end date of the course -->
-									<input type="date" name="end_date" value="<?php echo $row['end_date'] ?>">
-								</td>
-								<td> <!-- status -->
-									<?php
-									if($row['status'] == 0) { ?>
-										<img src="status_red.png" alt="" width="25px;" height="25px;">
-									<?php } else { ?>
-										<img src="status_green.png" alt="" width="25px;" height="25px;"> 
-									<?php } ?>
-								</td>
-
-								<td class="bg-light"> <!-- bag icon to display the enrolled students in the course -->
-									<?php
-									echo "<a href=\"course_enrolled_students.php?id=$row[id]\">"; ?>
-										<img src="bag.png" alt="bag" width="25px" height="25px">
-									<?php echo "</a>";
-									?>	
-									<input type="button" id="<?php echo $row['name']; ?>" name="delete_id" class="btn btn-sm btn-primary" value="DELETE" onclick="delete_course(this.id)">
-								</td>
-								<td> <!-- notes crud  -->
-									<a href="add_delete_files.php?course_name=<?php echo $row['name'] ?>">
-									
-										<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
-									</a>
-								</td>
-
 							</tr>
 						<?php }
-					}
-					?>
+					} else { ?>
+						<h3>No notes are available for this course.</h3>
+					<?php } ?>	
 				</tbody>
 			</table>
+		</form>
+
+		<!-- form to add/upload the notes -->
+		<form method="post" action="add_notes.php" class="border add_notes_form mt-5" enctype="multipart/form-data" id="addNotes">
+			<div class="form-group">
+				<label for="notes">Upload Notes</label>
+				<input type="text" class="text-white h4" name="course_name" style="background-color: black; display: none;" value="<?php echo $course_name ?>"> <!-- give the course name in add_notes.php file -->
+				<input type="file" name="notes[]" id="notes" class="form-control" multiple>
+			</div>
+			<br>
+			<!-- <input type="button" onclick="return add_note(this.id)" name="add" value="ADD" id="<?php echo $course_name ?>" class="btn btn-primary"> -->
+			<!-- button to submit the files -->
+			<input type="submit" name="add" value="ADD" id="add" class="btn btn-primary">
 		</form>
 	</div>
 
 	<script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
-	<script  type="text/javascript">
-		// function to delete the course
-		function delete_course(id) {
-			var course_id = id;
-			//confirm before deleting
-			if(confirm("Are you sure you want to delete?")) {
+	<script type="text/javascript">
+		// delete student record
+		function delete_note(id) {
+			$id = id;
+			var delete_id = id; //parameter id is stored in variable delete_id
+			//ask for confirmation before delete
+			if(confirm("Are you sure want to delete?")) {
+				//AJAX request
 				$.ajax({
-					url : "delete_course.php",
-					method : 'POST',
-					data : {
-						course_id : course_id
-					},
+					type : "POST",
+					url : "notes_delete.php",
+					data : {delete_id : delete_id},
 					success : function(data) {
 						if(data == 1) {
-							alert("Course not deleted. Please try again...");
+							alert("File not deleted");
 						} else {
-							alert(data);
+							//to display the updated list without refreshing the page
 							$("#navbar").hide();
-							$(".add_course_btn").hide();
-							$("#created_courses").load("created_courses.php");
+							$(".add_notes_btn").hide();
+							$(".add_notes_form").hide();
+							$('#notes').load('#notes');
 						}
 					}
 				});
 			}
-			
 		}
 
-		/*function enrolled_students(id) {
-			var course_id = id;
-			console.log(id);
+		/*function add_note(id) {
+			var course_name = id;
 			$.ajax({
-				url : "course_enrolled_students.php",
-				method : "POST",
+				url : "add_notes.php",
+				type : "POST",
 				data : {
-					course_id : course_id
+					course_name : course_name
 				},
 				success : function(data) {
 					alert(data);
+					$(".add_notes_form").load(".add_notes_form");
 				}
-			})
+			});
 		}*/
-	</script> 
+	</script>
 </body>
 </html>

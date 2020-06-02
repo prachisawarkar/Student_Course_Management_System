@@ -3,17 +3,17 @@ session_start();
 if(!isset($_SESSION['valid'])) {
 	header("Location : login.html");
 }
-
+//database connection file
 include('db_connect.php');
-
-$id = $_POST['delete_id']; // fetch the id to be deleted
+//fetch the notes name
+$notes_name = $_POST['delete_id'];
 
 //delete the row of the id from the database 
-$delete_query = "delete from student_registration where id = '$id'";
+$delete_query = "delete from add_course where notes = '$notes_name'";
 $result = mysqli_query($con, $delete_query);
 
 //check whether data deleted or not
-$query = "select * from student_registration where id  = '$id'";
+$query = "select * from add_course where notes  = '$notes_name'";
 $result2 = mysqli_query($con, $query);
 if(empty($query)) {
 	echo "1"; //not deleted
