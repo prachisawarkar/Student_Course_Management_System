@@ -6,7 +6,7 @@ if(isset($_GET['file_id'])) {
 	$id = $_GET['file_id']; //store the file id
 
 	//fetch the file from database
-	$query = "select * from add_course where id = '$id'";
+	$query = "select * from courses where id = '$id'";
 	$result = mysqli_query($con, $query);
 	
 	//check the number of rows of query result

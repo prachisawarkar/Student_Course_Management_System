@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Student Registration</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     
     <style>
         .registration {
@@ -19,210 +19,231 @@
     </style>
 </head>
 <body class="registration">
-	<div class="container">
+    <div class="container">
         <h1 class="text-primary">Student Registration</h1>
-		<form method="post" name="student_signup" action="" enctype="multipart/form-data">
-			<div class="form-group"> <!-- name -->
-				<label for="name">Name:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="name_error"></span> <!-- to show the error -->
-				<input type="text" name="name" id="name" class="form-control" placeholder="Name">
-			</div>
-			<div class="form-group"> <!-- email -->
-				<label for="email">Email:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="email_error"></span> <!-- to show the error -->
-				<input type="email" name="email" id="email" class="form-control" placeholder="Email">
-			</div>
-			<div class="form-group"> <!-- username -->
-				<label for="Username">Username:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="username_error"></span> <!-- to show the error -->
-				<input type="text" name="username" id="username" class="form-control" placeholder="Username">
-			</div>
-			<div class="form-group"> <!-- password -->
-				<label for="password">Password:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="password_error"></span> <!-- to show the error -->
-				<input type="password" name="password" id="password" class="form-control" placeholder="Password">
-			</div>
-			<div class="form-group"> <!-- confirm password -->
-				<label for="confirm_password">Confirm Password:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="confirm_password_error"></span> <!-- to show the error -->
-				<input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password">
-			</div>
-			<div class="form-group"> <!-- phone number -->
-				<label for="phone_no">Phone No.:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="phone_error"></span> <!-- to show the error -->
-				<input type="text" name="phone_no" id="phone_no" class="form-control" placeholder="Phone Number">
-			</div>
-			<div class="form-group"> <!-- address -->
-				<label for="address">Address:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="address_error"></span> <!-- to show the error -->
-				<input type="text" name="address" id="address" class="form-control" placeholder="Address">
-			</div>
+        <form method="post" name="student_signup" action="" enctype="multipart/form-data" id="registration_form">
+            <div class="form-group"> <!-- name -->
+                <label for="name">Name:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="name_error"></span> <!-- to show the error -->
+                <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
+            </div>
+            <div class="form-group"> <!-- email -->
+                <label for="email">Email:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="email_error"></span> <!-- to show the error -->
+                <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+            </div>
+            <div class="form-group"> <!-- username -->
+                <label for="Username">Username:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="username_error"></span> <!-- to show the error -->
+                <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="form-group"> <!-- password -->
+                <label for="password">Password:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="password_error"></span> <!-- to show the error -->
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            </div>
+            <div class="form-group"> <!-- confirm password -->
+                <label for="confirm_password">Confirm Password:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="confirm_password_error"></span> <!-- to show the error -->
+                <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password" required>
+            </div>
+            <div class="form-group"> <!-- phone number -->
+                <label for="phone_no">Phone No.:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="phone_error"></span> <!-- to show the error -->
+                <input type="text" name="phone_no" id="phone_no" class="form-control" placeholder="Phone Number" required>
+            </div>
+            <div class="form-group"> <!-- address -->
+                <label for="address">Address:</label>
+                <span class="required">*</span>
+                <span class="error_message" id="address_error"></span> <!-- to show the error -->
+                <input type="text" name="address" id="address" class="form-control" placeholder="Address" required>
+            </div>
+            <div class="form-group"> <!-- image -->
+                <label for="image">Upload Image:</label> <p>File extension must be .jpeg, .jpg or .png</p>
+
+                <input type="file" name="image" id="image" class="form-control" multiple>
+
+                <br>
+            </div>
+            <p id="err"></p> <!-- to show the error -->
             <!-- button to submit the form -->
-			<input type="button" name="submit" class="btn btn-primary mb-3" value="Submit" id="submit">
-		</form>	
+            <input type="submit" name="submit" class="btn btn-primary mb-3" value="Submit" id="submit">
+        </form> 
+        <div id="msg"></div>
+        <div id="err"></div>
         <p style="font-size: 18px;">
             <span class="text-danger">Already have an account?</span> 
             <a href="login.html">
                 <span class="text-primary">Sign In</span>
             </a>
         </p>
-	</div>
+    </div>
 
-	<script type="text/javascript" 
+    <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
     <script type="text/javascript">
-    	$(document).ready(function() {
-    		$('#submit').click(function() {
-    			// taking the value of input fields using val()
+        $(document).ready(function() {
+            $('#registration_form').submit(function(e) {
+                e.preventDefault();
+                // taking the value of input fields using val()  
+                var name = $('#name').val();
+                var email = $('#email').val();
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var confirm_password = $('#confirm_password').val();
+                var phone_no = $('#phone_no').val();
+                var address = $('#address').val();
                 
-    			var name = $('#name').val();
-    			var email = $('#email').val();
-    			var username = $('#username').val();
-    			var password = $('#password').val();
-    			var confirm_password = $('#confirm_password').val();
-    			var phone_no = $('#phone_no').val();
-    			var address = $('#address').val();
-    			// pattern/rules of writing name, email, phone_no,etc.
-    			
-    			var name_pattern = /^[A-Za-z ]{0,70}$/i;
-    			var email_pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    			var phone_pattern = /^[0-9]{10,13}$/i;
+                // pattern/rules of writing name, email, phone_no,etc.  
+                var name_pattern = /^[A-Za-z ]{0,70}$/i;
+                var username_pattern = /^\S*$/;
+                var email_pattern = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                var phone_pattern = /^[0-9]{10,13}$/i;
 
-    			//name
-    			if($.trim(name) == "") {
-    				$('#name_error').fadeIn().html("Please Enter Name");
-    				setTimeout(function() {
-    					$("#name_error").fadeOut();
-    				}, 3000);
-    				$('#name').focus();
-    				return false;
-    			} else if(!name_pattern.test(name)) {
-    				$('#name_error').fadeIn().html('Please enter valid name');
-    				setTimeout(function() {
-    					$('#name_error').fadeOut();
-    				}, 3000);
-    				$('#name').focus();
-    				return false;
-    			}
+                //name
+                /*if($.trim(name) == "") {
+                    $('#name_error').fadeIn().html("Please Enter Name");
+                    setTimeout(function() {
+                        $("#name_error").fadeOut();
+                    }, 3000);
+                    $('#name').focus();
+                    return false;
+                } else*/ 
+                if(!name_pattern.test(name)) {
+                    $('#name_error').fadeIn().html('Please enter valid name');
+                    setTimeout(function() {
+                        $('#name_error').fadeOut();
+                    }, 3000);
+                    $('#name').focus();
+                    return false;
+                }
 
-    			//email
-    			if($.trim(email) == "") {
-    				$('#email_error').fadeIn().html('Please Enter Email');
-    				setTimeout(function() {
-    					$('#email_error').fadeOut();
-    				}, 3000);
-    				$('#email').focus();
-    				return false;
-    			} else if(!email_pattern.test(email)) {
-    				$('#email_error').fadeIn().html('Please enter valid email');
-    				setTimeout(function() {
-    					$('#email_error').fadeOut();
-    				}, 3000);
-    				$('#email').focus();
-    				return false;
-    			}
+                //email
+                /*if($.trim(email) == "") {
+                    $('#email_error').fadeIn().html('Please Enter Email');
+                    setTimeout(function() {
+                        $('#email_error').fadeOut();
+                    }, 3000);
+                    $('#email').focus();
+                    return false;
+                } else*/ 
+                if(!email_pattern.test(email)) {
+                    $('#email_error').fadeIn().html('Please enter valid email');
+                    setTimeout(function() {
+                        $('#email_error').fadeOut();
+                    }, 3000);
+                    $('#email').focus();
+                    return false;
+                }
 
-    			//username
-    			if($.trim(username) == "") {
-    				$('#username_error').fadeIn().html("Please Enter Username");
-    				setTimeout(function() {
-    					$("#username_error").fadeOut();
-    				}, 3000);
-    				$('#username').focus();
-    				return false;
-    			}
+                //username
+                /*if($.trim(username) == "") {
+                    $('#username_error').fadeIn().html("Please Enter Username");
+                    setTimeout(function() {
+                        $("#username_error").fadeOut();
+                    }, 3000);
+                    $('#username').focus();
+                    return false;
+                } else*/ 
+                if(!username_pattern.test(username)) {
+                    $('#username_error').fadeIn().html('Please enter valid username');
+                    setTimeout(function() {
+                        $('#username_error').fadeOut();
+                    }, 3000);
+                    $('#username').focus();
+                    return false;
+                }
 
-    			//password
-    			if($.trim(password) == "") {
-    				$('#password_error').fadeIn().html("Please Enter Password");
-    				setTimeout(function() {
-    					$("#password_error").fadeOut();
-    				}, 3000);
-    				$('#password').focus();
-    				return false;
-    			}
-    			
-    			//confirm password
-    			if($.trim(confirm_password) == "") {
-    				$('#confirm_password_error').fadeIn().html("Please Enter Confirm Password");
-    				setTimeout(function() {
-    					$("#confirm_password_error").fadeOut();
-    				}, 3000);
-    				$('#confirm_password').focus();
-    				return false;
-    			}
+                //password
+                /*if($.trim(password) == "") {
+                    $('#password_error').fadeIn().html("Please Enter Password");
+                    setTimeout(function() {
+                        $("#password_error").fadeOut();
+                    }, 3000);
+                    $('#password').focus();
+                    return false;
+                }*/
+                
+                //confirm password
+                /*if($.trim(confirm_password) == "") {
+                    $('#confirm_password_error').fadeIn().html("Please Enter Confirm Password");
+                    setTimeout(function() {
+                        $("#confirm_password_error").fadeOut();
+                    }, 3000);
+                    $('#confirm_password').focus();
+                    return false;
+                }*/
 
-    			//phone number
-    			if($.trim(phone_no) == "") {
-    				$('#phone_error').fadeIn().html('Please Enter Phone number');
-    				setTimeout(function() {
-    					$('#phone_error').fadeOut();
-    				}, 3000);
-    				$('#phone_no').focus();
-    				return false;
-    			} else if(!phone_pattern.test(phone_no)) {
-    				$('#phone_error').fadeIn().html('Please enter valid phone number');
-    				setTimeout(function() {
-    					$('#phone_error').fadeOut();
-    				}, 3000);
-    				$('#phone_no').focus();
-    				return false;
-    			}
+                //phone number
+                /*if($.trim(phone_no) == "") {
+                    $('#phone_error').fadeIn().html('Please Enter Phone number');
+                    setTimeout(function() {
+                        $('#phone_error').fadeOut();
+                    }, 3000);
+                    $('#phone_no').focus();
+                    return false;
+                } else*/ 
+                if(!phone_pattern.test(phone_no)) {
+                    $('#phone_error').fadeIn().html('Please enter valid phone number');
+                    setTimeout(function() {
+                        $('#phone_error').fadeOut();
+                    }, 3000);
+                    $('#phone_no').focus();
+                    return false;
+                }
 
-    			//address
-    			if($.trim(address) == "") {
-    				$('#address_error').fadeIn().html('Please Enter Address');
-    				setTimeout(function() {
-    					$('#address_error').fadeOut();
-    				}, 3000);
-    				$('#address').focus();
-    				return false;
-    			}
- 
-				if(password === confirm_password) {
+                //address
+                /*if($.trim(address) == "") {
+                    $('#address_error').fadeIn().html('Please Enter Address');
+                    setTimeout(function() {
+                        $('#address_error').fadeOut();
+                    }, 3000);
+                    $('#address').focus();
+                    return false;
+                }*/
+                
+                if(password === confirm_password) {
                     //disable the button after clicking
                     $('#submit').attr('disabled', 'disabled');
-                    console.log(name);
-
-                    var name = $('#name').val();
-                    var email = $('#email').val();
-                    var username = $('#username').val();
-                    var password = $('#password').val();
-                    var confirm_password = $('#confirm_password').val();
-                    var phone_no = $('#phone_no').val();
-                    var address = $('#address').val();
-
+                    var formdata = new FormData(this);
                     $.ajax({
-                        url : "addStudent.php",
+                        url : 'addStudent.php',
                         type : "POST",
-                        data : {
-                            name : name,
-                            email : email,
-                            username : username,
-                            password: password,
-                            confirm_password : confirm_password,
-                            phone_no : phone_no,
-                            address : address
-                        },
+                        data : formdata,
+                        contentType : false,
                         cache : false,
+                        processData : false,
+                        beforeSend : function() {
+                            $("#err").fadeOut();
+                        },
                         success : function(response) {
-                            alert(response); //show the message
-                            document.location.href = 'login.html';
+                            /*console.log(response);
+                            alert(response);*/ //show the message
+                            
+                            if(response == 1) {
+                                document.location.href = 'login.html';
+                            } else {
+                                /*document.location.href = 'prachiaddstudent.html';*/
+                                $("#msg").html("<div class='alert alert-success'>"+response+"</div>");
+                            }
+
+                        },
+                        error : function(e) {
+                            $("#err").html(e).fadeIn();
                         }
                     });
                 } else {
                     alert('Password does not match');
                 }
-    		});
-    	});
+            });
+        });
     </script>
 
 </body>

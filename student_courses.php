@@ -6,7 +6,7 @@ if(!$_SESSION['valid']) {
 //database connection file
 include 'db_connect.php';
 //select data
-$query = "select * from add_course group by name order by id asc";
+$query = "select * from courses group by name order by id asc";
 $result = mysqli_query($con, $query);
 ?>
 
@@ -60,7 +60,7 @@ $result = mysqli_query($con, $query);
 	                </li>
 	                <li class="navbar-item mr-4 mb-1">
 	                    <a class="navbar-link" href="student_courses.php">
-	                        <button type="button" class='btn-outline-primary rounded'>Courses</button>
+	                        <button type="button" class='btn-outline-primary rounded active'>Courses</button>
 	                    </a>
 	                </li>
 	                <li class="navbar-item mr-4 mb-1">
@@ -79,8 +79,8 @@ $result = mysqli_query($con, $query);
 	</div>
 	<!-- display all the added courses -->
 	<div class="container">
-		<h1 class="text-primary mb-3">All Courses</h1>
-
+		<h1 class="text-primary mb-3 heading heading">All Courses</h1>
+		<div class="msg mb-5"></div>
 		<form method="post" action="student_courses.php" id="student_courses">
 			<div class="row">
 				<?php
@@ -89,9 +89,9 @@ $result = mysqli_query($con, $query);
 						//if the start date of the course has gone then it will show disable otherwise enable
 						if($row['start_date'] > date('yy-m-d')) { ?> 
 					
-							<div class="form-group border bg-dark text-white text-justify col-md ml-5">
+							<div class="form-group border bg-dark text-white text-justify ml-5 col-md">
 								<!-- id of the course -->
-								<input type="text" name="id" disabled="true" id="id" class="course_id border-0 bg-dark text-white ml-5" value="<?php echo $row['id']?>">
+								<input type="text" name="id" disabled="true" id="id" class="course_id border-0 bg-dark text-white ml-5" style="display: none;" value="<?php echo $row['id']?>">
 
 								<br>
 								<!-- name of the course -->
@@ -102,6 +102,8 @@ $result = mysqli_query($con, $query);
 								<textarea name="summary" disabled="true" id="summary" class="border-0 float-left summary bg-dark text-white ml-5" style="display: none;" >
 									<?php echo $row['summary'] ?>
 								</textarea>
+
+								<p class = "border-0 float-left summary bg-dark text-white ml-5"> <?php echo $row['summary'] ?> </p>
 
 								<br>
 								<!-- start date of the course -->
@@ -121,11 +123,11 @@ $result = mysqli_query($con, $query);
 
 							<div class="form-group border bg-dark text-white text-justify col-md ml-5">
 								<!-- id of the course -->
-								<input type="text" name="id" disabled="true" id="id" class="course_id border-0 bg-dark text-white" value="<?php echo $row['id']?>">
+								<input type="text" name="id" disabled="true" id="id" class="course_id border-0 bg-dark text-white" style="display: none;" value="<?php echo $row['id']?>">
 
 								<br>
 								<!-- nam eof the course -->
-								<input type="text" name="name" disabled="true" id="name" class="course_title border-0 bg-dark text-white" value="<?php echo $row['name']?>">
+								<input type="text" name="name" disabled="true" id="name" class="course_title border-0 bg-dark text-white h3" value="<?php echo $row['name']?>">
 								
 								<br>
 								<!-- summary of the course(hidden) -->
@@ -178,8 +180,16 @@ $result = mysqli_query($con, $query);
 					enroll_id : enroll_id
 				},
 				success : function(data) {
-					alert(data);
-					document.location.href = "student_my_courses.php";
+					if(data == 1) {
+						$('.top-section').hide();
+						$('.heading').hide();
+						$("#student_courses").load("student_my_courses.php");
+					} else {
+						$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+					}
+					/*document.location.href = "student_my_courses.php";*/
+					
+
 				}
 			});
 		}

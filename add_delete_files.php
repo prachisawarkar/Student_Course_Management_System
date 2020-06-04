@@ -9,7 +9,7 @@ if(!isset($_SESSION['valid'])) {
 include 'db_connect.php';
 $course_name = $_GET['course_name']; // get the course name 
 //query will fetch the data of the course name given
-$query = "select * from add_course where name = '$course_name'";
+$query = "select * from courses where name = '$course_name'";
 $result = mysqli_query($con, $query); 
 ?>
 
@@ -26,17 +26,28 @@ $result = mysqli_query($con, $query);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<style>
-		body {
-			background-color: black;
-			color: white;
-		}
-		td {
-			border: 1px solid white;
-		}
-	</style>
+        .top_section {
+            background-color: #293946 ;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px;
+        }
+        body {
+            background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url("bgimage.jpg");
+            background-size: cover;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px; 
+        }
+        th, td{
+        	border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
+	<div class="container top_section">
 		<!-- navigation bar -->
 		<nav class="navbar navbar-expand-lg navbar-light text-center" id="navbar">
 	        <a class="navbar-brand mr-4 text-" href="#"> <h1 class="text-primary">
@@ -79,12 +90,12 @@ $result = mysqli_query($con, $query);
 		</a>
 
 		<!-- form to display the data on the screen -->
-		<form method="post">
+		<form method="post" id="view">
 			<table id="notes" class="text-center">
 				<thead>
 					<tr>
-						<th>
-							<input type="text" class="text-white h4" name="course_nm" style="background-color: black;" value="<?php echo $course_name ?>">
+						<th class="border-0">
+							<input type="text" class="h2 border-0 bg-transparent" name="course_nm" value="<?php echo $course_name ?>">
 						</th>
 					</tr>
 					<tr><!-- table headings -->
@@ -101,7 +112,7 @@ $result = mysqli_query($con, $query);
 						while($row = mysqli_fetch_array($result)) { ?>
 							<tr>
 								<td> <!-- file name -->
-									<input type="text" name="notes" class="text-white border-0" style="background-color: black;" value="<?php echo $row['notes'] ?>">
+									<input type="text" name="notes" class="border-0 bg-transparent form-control text-dark" value="<?php echo $row['notes'] ?>">
 								</td>
 								<td> <!-- download link -->
 									<a href="file_download.php?file_id=<?php echo $row['id'] ?>">Download</a>
@@ -119,16 +130,17 @@ $result = mysqli_query($con, $query);
 		</form>
 
 		<!-- form to add/upload the notes -->
-		<form method="post" action="add_notes.php" class="border add_notes_form mt-5" enctype="multipart/form-data" id="addNotes">
+		<form method="post" class="rounded add_notes_form mt-5" enctype="multipart/form-data" id="addNotes" style="border: 1px solid black;">
 			<div class="form-group">
-				<label for="notes">Upload Notes</label>
+				<label for="notes" class="ml-3">Upload Notes</label>
+				<p  class="text-danger mt-0 ml-3">Note: File extension must be .pdf, .docx, .jpeg, .jpg or .png</p>
 				<input type="text" class="text-white h4" name="course_name" style="background-color: black; display: none;" value="<?php echo $course_name ?>"> <!-- give the course name in add_notes.php file -->
-				<input type="file" name="notes[]" id="notes" class="form-control" multiple>
+				<input type="file" required name="notes[]" id="notes" class="form-control" multiple>
 			</div>
 			<br>
 			<!-- <input type="button" onclick="return add_note(this.id)" name="add" value="ADD" id="<?php echo $course_name ?>" class="btn btn-primary"> -->
 			<!-- button to submit the files -->
-			<input type="submit" name="add" value="ADD" id="add" class="btn btn-primary">
+			<input type="submit" name="submit" value="ADD" id="submit" class="btn btn-primary ml-3">
 		</form>
 	</div>
 
@@ -162,20 +174,36 @@ $result = mysqli_query($con, $query);
 			}
 		}
 
-		/*function add_note(id) {
-			var course_name = id;
-			$.ajax({
-				url : "add_notes.php",
-				type : "POST",
-				data : {
-					course_name : course_name
-				},
-				success : function(data) {
-					alert(data);
-					$(".add_notes_form").load(".add_notes_form");
-				}
+		$('#addNotes').submit(function(e) {
+				e.preventDefault();
+				var file = $('#notes').val();
+				var formdata = new FormData(this);
+				console.log(formdata);
+				$('#submit').attr('disabled', 'disabled');
+				$.ajax({
+					url : 'add_notes.php',
+					type : "POST",
+					data : formdata,
+					contentType : false,
+					processData : false,
+					cache : false,
+					beforeSend : function() {
+						$("#err").fadeOut();
+					},
+					success : function(data) {
+						if(data == 1) {
+							/*$('#addNotes').load('#view');*/
+							/*document.location.href = 'add_delete_files.php';*/
+
+						} else {
+							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+						}
+					},
+					error : function(e) {
+						$("#err").html(e).fadeIn();
+					}
+				});
 			});
-		}*/
 	</script>
 </body>
 </html>

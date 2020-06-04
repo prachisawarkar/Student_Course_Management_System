@@ -6,7 +6,7 @@ if(!isset($_SESSION['valid'])) {
 $id = $_SESSION['id']; //fetch the id of the current student
 include 'db_connect.php';
 //select the data to display
-$query = "select * from student_my_courses where student_id = '$id'";
+$query = "select * from my_courses where student_id = '$id'";
 $result = mysqli_query($con, $query);
 
 //select the data to display the data disable or enable according to the student status and course status of the student
@@ -15,7 +15,7 @@ $status_result = mysqli_query($con, $student_status_query);
 $status_row = $status_result -> fetch_assoc();
 $student_status = $status_row['status'];
 
-/*$expired_courses = "select * from add_course";
+/*$expired_courses = "select * from courses";
 $result1 = mysqli_query($con, $expired_courses);*/
 ?>
 
@@ -24,7 +24,7 @@ $result1 = mysqli_query($con, $expired_courses);*/
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Courses</title>
+	<title>My Courses</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -74,7 +74,7 @@ $result1 = mysqli_query($con, $expired_courses);*/
 	                </li>
 	                <li class="navbar-item mr-4 mb-1">
 	                    <a class="navbar-link" href="student_my_courses.php">
-	                        <button type="button" class='btn-outline-primary rounded'>My Courses</button>
+	                        <button type="button" class='btn-outline-primary rounded active'>My Courses</button>
 	                    </a>
 	                </li>
 	                <li class="navbar-item mr-4 mb-1">
@@ -90,68 +90,90 @@ $result1 = mysqli_query($con, $expired_courses);*/
 	<div class="container">
 		<h1 class="text-primary">My Courses</h1>
 		<?php
-		while($row = mysqli_fetch_array($result)) {
-			//enable the course
-			if($student_status == 1 && $row['status'] == 1) { ?>
-				<div class="row mb-5" style="border : 2px solid #293946;">
-					<div class="col-md-6">
-						<h3> <?php echo $row['name'] ?> </h3>
-						<p> <?php echo $row['summary'] ?> </p>
-						<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
+		if($result->num_rows > 0) {
+			while($row = mysqli_fetch_array($result)) {
+				//enable the course
+			
+				if($student_status == 1 && $row['status'] == 1 && $row['end_date'] > date('Y-m-d')) { ?>
+					<div class="row mb-5" style="border : 2px solid #293946;">
+						<div class="col-md-6">
+							<h3> <?php echo $row['name'] ?> </h3>
+							<p> <?php echo $row['summary'] ?> </p>
+							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
+						</div>
+						<!-- to download the notes -->
+						<div class="col-md-3">
+							<a href="download_notes.php?course_name=<?php echo $row['name'] ?>">
+								<h4>Download Notes</h4>
+								<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
+							</a>
+						</div>
+						<div class="col-md-3"> <!-- enroll now button -->
+							<input type="button" name="enroll_now" value="ENROLLED" class="btn btn-primary mt-3">
+						</div>
 					</div>
-					<!-- to download the notes -->
-					<div class="col-md-3">
-						<a href="download_notes.php?course_name=<?php echo $row['name'] ?>">
-							<h4>Download Notes</h4>
-							<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
-						</a>
+				<?php } else if($student_status == 1 && $row['status'] == 1 && $row['end_date'] < date('Y-m-d')) { ?>
+					<!-- disable the course -->
+					<div class="row mb-5" style="border : 2px solid #293946;">
+						<div class="col-md-6">
+							<h3> <?php echo $row['name'] ?> </h3>
+							<p> <?php echo $row['summary'] ?> </p>
+							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
+						</div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3">
+							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3 mt-3">
+						</div>
 					</div>
-					<div class="col-md-3"> <!-- enroll now button -->
-						<input type="button" name="enroll_now" value="ENROLLED" class="btn btn-primary mt-3">
-					</div>
-				</div>
-			<?php } else if($student_status == 1 && $row['status'] == 0) { ?>
-				<!-- disable the course -->
-				<div class="row mb-5" style="border : 2px solid #293946;">
-					<div class="col-md-6">
-						<h3> <?php echo $row['name'] ?> </h3>
-						<p> <?php echo $row['summary'] ?> </p>
-						<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
-					</div>
-					<!-- <div class="col-md-3 disabled">
-						<a href="">
-							<h4>Download Notes</h4>
-							<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
-						</a>
+				<?php } else if($student_status == 1 && $row['status'] == 0) { ?> 
+					<!-- unable to view the course -->
+					<!-- <div class="row mb-5" style="border : 2px solid #293946;">
+						<div class="col-md-6">
+							<h3> <?php echo $row['name'] ?> </h3>
+							<p> <?php echo $row['summary'] ?> </p>
+							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
+						</div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3">
+							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3">
+						</div>
 					</div> -->
-					<div class="col-md-3"></div>
-					<div class="col-md-3">
-						<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3 mt-3">
-					</div>
-				</div>
-			<?php } else if($student_status == 0) { ?> 
-				<!-- disable the course -->
-				<div class="row mb-5" style="border : 2px solid #293946;">
-					<div class="col-md-6">
-						<h3> <?php echo $row['name'] ?> </h3>
-						<p> <?php echo $row['summary'] ?> </p>
-						<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
-					</div>
-					<!-- <div class="col-md-3 disabled">
-						<a href="">
-							<h4>Download Notes</h4>
-							<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
-						</a>
+					<?php echo " "; ?>
+				<?php } else if($student_status == 0 && $row['status'] == 1) { ?>
+					<!-- unable to view the course -->
+					<!-- <div class="row mb-5" style="border : 2px solid #293946;">
+						<div class="col-md-6">
+							<h3> <?php echo $row['name'] ?> </h3>
+							<p> <?php echo $row['summary'] ?> </p>
+							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
+						</div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3">
+							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3 mt-3">
+						</div>
 					</div> -->
-					<div class="col-md-3"></div>
-					<div class="col-md-3">
-						<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3">
-					</div>
-				</div>
-			<?php } else { ?>
-				<h3>No course is enrolled!</h3>
-			<?php }
-		} ?>
+					<?php echo " " ?>
+				<?php } else if($student_status == 0 && $row['status'] == 0) { ?>
+					<!-- unable to view the course -->
+					<!-- <div class="row mb-5" style="border : 2px solid #293946;">
+						<div class="col-md-6">
+							<h3> <?php echo $row['name'] ?> </h3>
+							<p> <?php echo $row['summary'] ?> </p>
+							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
+						</div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3">
+							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3 mt-3">
+						</div>
+					</div> -->
+					<?php echo " " ?>
+				<?php } else { ?>
+					<h3>No course is enrolled!</h3>
+				<?php }
+			} 
+		} else { 
+			echo "You have not enrolled in any course!";
+		}?>
 	</div>
 	
 </body>

@@ -59,7 +59,7 @@ $row = $result -> fetch_assoc(); //fetch data
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0 ">
                     <li class="navbar-item active mr-4 mb-1">
                         <a class="navbar-link" href="profile.php">
-                            <button type="button" class='btn-outline-primary rounded'>Profile</button>
+                            <button type="button" class='btn-outline-primary rounded active'>Profile</button>
                         </a>
                     </li>
                     <li class="navbar-item mr-4 mb-1">
@@ -84,63 +84,69 @@ $row = $result -> fetch_assoc(); //fetch data
     </div>
     <!-- profile page -->
     <div class="container">
-        <div class="row border"> <!-- name of the student -->
-            <div class="col-md-3">
-                <label class="text-primary"><h4>Name: </h4></label>
+        <div class="row border border-primary">
+            <div class="col-5 text-center">
+                <img src="<?php echo 'uploads/'.$row['image'] ?>" alt="" class="rounded-circle" width="248px" height="268px">
             </div>
-            <div class="col-md-8"> 
-                <!-- <input type="text" name="name" id="name" value = "<?php echo $row['name'] ?>" class="border-0"> -->
-                <p class="info"><?php echo $row['name'] ?></p> 
-            </div>
-        </div>
-        <div class="row border"> <!-- email id of the student -->
-            <div class="col-md-3">
-                <label class="text-primary"><h4>Email Id: </h4></label>
-            </div>
-            <div class="col-md-8">
-                <p class="info"><?php echo $row['email'] ?></p>
-            </div>
-        </div>
-        <div class="row border"> <!-- username of the student -->
-            <div class="col-md-3">
-                <label class="text-primary"><h4>Username: </h4></label>
-            </div>
-            <div class="col-md-8">
-                <!-- <input type="text" name="username" id="username" value = "<?php echo $row['username'] ?>" class="border-0"> -->
-                <p class="info"><?php echo $row['username'] ?></p>
-            </div>
-        </div>
-        <div class="row border"> <!-- phone number of the student -->
-            <div class="col-md-3">
-                <label class="text-primary"><h4>Phone Number: </h4></label>
-            </div>
-            <div class="col-md-8">
-                <p class="info"><?php echo $row['phone_no'] ?></p>
-            </div>
-        </div>
-        <div class="row border"> <!-- address of the student -->
-            <div class="col-md-3">
-                <label class="text-primary"><h4>Address: </h4></label>
-            </div>
-            <div class="col-md-8">
-                <!-- <input type="text" name="address" id="address" value = "<?php echo $row['address'] ?>" class="border-0"> -->
-                <p class="info"><?php echo $row['address'] ?></p>
-            </div>
-        </div>
-        <div class="row border"> <!-- registration date and time -->
-            <div class="col-md-3">
-                <label class="text-primary"><h4>Joining Date & Time: </h4></label>
-            </div>
-            <div class="col-md-8">
-                <p class="info"><?php echo $row['created'] ?></p>
+            <div class="col">
+                <div class="row border"> <!-- name of the student -->
+                    <div class="col-md-3">
+                        <label class="text-primary"><h4>Name: </h4></label>
+                    </div>
+                    <div class="col-md-8"> 
+                        <!-- <input type="text" name="name" id="name" value = "<?php echo $row['name'] ?>" class="border-0"> -->
+                        <p class="info"><?php echo $row['name'] ?></p> 
+                    </div>
+                </div>
+                <div class="row border"> <!-- email id of the student -->
+                    <div class="col-md-3">
+                        <label class="text-primary"><h4>Email Id: </h4></label>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="info"><?php echo $row['email'] ?></p>
+                    </div>
+                </div>
+                <div class="row border"> <!-- username of the student -->
+                    <div class="col-md-3">
+                        <label class="text-primary"><h4>Username: </h4></label>
+                    </div>
+                    <div class="col-md-8">
+                        <!-- <input type="text" name="username" id="username" value = "<?php echo $row['username'] ?>" class="border-0"> -->
+                        <p class="info"><?php echo $row['username'] ?></p>
+                    </div>
+                </div>
+                <div class="row border"> <!-- phone number of the student -->
+                    <div class="col-md-3">
+                        <label class="text-primary"><h4>Phone Number: </h4></label>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="info"><?php echo $row['phone_no'] ?></p>
+                    </div>
+                </div>
+                <div class="row border"> <!-- address of the student -->
+                    <div class="col-md-3">
+                        <label class="text-primary"><h4>Address: </h4></label>
+                    </div>
+                    <div class="col-md-8">
+                        <!-- <input type="text" name="address" id="address" value = "<?php echo $row['address'] ?>" class="border-0"> -->
+                        <p class="info"><?php echo $row['address'] ?></p>
+                    </div>
+                </div>
+                <div class="row border"> <!-- registration date and time -->
+                    <div class="col-md-3">
+                        <label class="text-primary"><h4>Joining Date & Time: </h4></label>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="info"><?php echo $row['created'] ?></p>
+                    </div>
+                </div>
             </div>
         </div>
         <br>
-        <!-- <input type="button" name="save" class="btn btn-outline-primary" id="save" value="SAVE"> -->
 
 	</div>
 
-    <script type="text/javascript" 
+    <!-- <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -172,6 +178,6 @@ $row = $result -> fetch_assoc(); //fetch data
             });   
             
         });
-    </script>
+    </script> -->
 </body>
 </html>

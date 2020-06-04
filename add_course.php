@@ -19,9 +19,26 @@ if(!isset($_SESSION['valid'])) {
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        .top_section {
+            background-color: #293946 ;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px;
+        }
+        body {
+            background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.7)), url("bgimage.jpg");
+            background-size: cover;
+            z-index: 1;
+            background-repeat: no-repeat;
+            margin-top :  100px;
+            margin-bottom: 100px; 
+        }
+    </style>
 </head>
-<body style="background-color: black; color: white;">
-	<div class="container">
+<body>
+	<div class="container top_section">
 		<nav class="navbar navbar-expand-lg navbar-light text-center">
             <a class="navbar-brand mr-4 text-" href="#"> <h1 class="text-primary"><?php echo $_SESSION['name'] ?></h1> </a>
             <button class="navbar-toggler alert-light" type="button" data-toggle = 'collapse' data-target = '#navbarTogglerDemo1' aria-controls = 'navbarTogglerDemo1'aria-expanded = 'false' aria-label = 'Toggle navigation'>
@@ -56,9 +73,10 @@ if(!isset($_SESSION['valid'])) {
         </nav>
 	</div>
 	<div class="container">
-		<h1>Add Courses</h1>
+		<h1>Add Course</h1>
 		<!-- form to add the course -->
-		<form method="post" action="add_coursefile.php" name="course_form" id="course_add_form" enctype="multipart/form-data">
+		<form method="post" name="course_form" id="course_add_form" enctype="multipart/form-data">
+			<p id="msg"></p>
 			<!-- name of the course -->
 			<div class="form-group">
 				<label for="course_name">Name of the course
@@ -66,7 +84,7 @@ if(!isset($_SESSION['valid'])) {
 				<span class="required">*</span>
 				<!-- to show the error -->
 				<span class="error_message" id="course_name_error"></span>
-				<input type="text" name="name" id="name" placeholder="Course Name" class="form-control">
+				<input type="text" name="name" id="name" placeholder="Course Name" class="form-control" required>
 			</div>
 			<!-- summary of the course -->
 			<div class="form-group">
@@ -76,7 +94,7 @@ if(!isset($_SESSION['valid'])) {
 				<span class="required">*</span>
 				<!-- to show the error -->
 				<span class="error_message" id="summary_error"></span>
-				<textarea name="summary" id="summary" placeholder="Summary" class="form-control"></textarea>
+				<textarea name="summary" id="summary" placeholder="Summary" class="form-control" required></textarea>
 			</div>
 			<!-- start date of the course -->
 			<div class="form-group">
@@ -86,7 +104,7 @@ if(!isset($_SESSION['valid'])) {
 				<span class="required">*</span>
 				<!-- to show the error -->
 				<span class="error_message" id="start_date_error"></span>
-				<input type="date" name="start_date" id="start_date" placeholder="Start date" class="form-control">
+				<input type="date" name="start_date" id="start_date" placeholder="Start date" class="form-control" required>
 			</div>
 			<!-- end date of the course -->
 			<div class="form-group">
@@ -96,32 +114,34 @@ if(!isset($_SESSION['valid'])) {
 				<span class="required">*</span>
 				<!-- to show the error -->
 				<span class="error_message" id="end_date_error"></span>
-				<input type="date" name="end_date" id="end_date" placeholder="End date" class="form-control">
+				<input type="date" name="end_date" id="end_date" placeholder="End date" class="form-control" required>
 			</div>
 			<!-- to upload the multiple notes -->
 			<div class="form-group">
-				<label for="notes">Upload Notes</label>
+				<label for="notes" class="mb-0">Upload Notes</label>
+				<p  class="text-danger mt-0">Note: File extension must be .pdf, .docx, .jpeg, .jpg or .png</p>
 				<input type="file" name="notes[]" id="notes" class="form-control" multiple>
 			</div>
 			<br>
 			<!-- button to submit the form -->
-			<input type="submit" name="add" value="ADD" id="add" class="btn btn-primary">
+			<input type="submit" name="submit" value="ADD" id="submit" class="btn btn-primary">
 
 		</form>
 	</div>
-	<!-- <script type="text/javascript" 
+	<script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
     </script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#add').click(function() {
+			$('#course_add_form').submit(function(e) {
+				e.preventDefault();
 				var name = $('#name').val();
 				var summary = $('#summary').val();
 				var start_date = $('#start_date').val();
 				var end_date = $('#end_date').val();
 				var file = $('#notes').val();
 
-				if($.trim(name) == '') {
+				/*if($.trim(name) == '') {
 					$('#course_name_error').fadeIn().html("Please Enter the Course name");
 					setTimeout(function() {
 						$('#course_name_error').fadeOut();
@@ -137,9 +157,9 @@ if(!isset($_SESSION['valid'])) {
 					}, 3000);
 					$('#summary').focus();
 					return false;
-				}
+				}*/
 
-				if($.trim(start_date) == '') {
+				/*if($.trim(start_date) == '') {
 					$('#start_date_error').fadeIn().html("Please enter the Start date");
 					setTimeout(function() {
 						$('#start_date_error').fadeOut();
@@ -155,28 +175,42 @@ if(!isset($_SESSION['valid'])) {
 					}, 3000);
 					$('#end_date').focus();
 					return false;
+				} else*/ 
+				if(start_date > end_date) {
+					$('#end_date_error').fadeIn().html("Please enter the valid End date");
+					setTimeout(function() {
+						$('#end_date_error').fadeOut();
+					}, 3000);
+					$('#end_date').focus();
+					return false;
 				}
 
-				/*var data = $('form').serialize();*/
+				var formdata = new FormData(this);
 
-				/*$('#add').attr('disabled', 'disabled');
+				$('#submit').attr('disabled', 'disabled');
 				$.ajax({
 					url : 'add_coursefile.php',
 					type : "POST",
-					data : {
-						name : name,
-						summary : summary,
-						start_date : start_date,
-						end_date : end_date
-						notes : notes
-					} $('#course_add_form').serialize(),
+					data : formdata,
+					contentType : false,
+					processData : false,
+					cache : false,
+					beforeSend : function() {
+						$("#err").fadeOut();
+					},
 					success : function(data) {
-						alert(data);
-						document.location.href = "add_course.php";
+						if(data == 1) {
+							$('#course_add_form').load('created_courses.php');
+						} else {
+							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+						}
+					},
+					error : function(e) {
+						$("#err").html(e).fadeIn();
 					}
-				});*/
+				});
 			});
 		});
-	</script> -->
+	</script> 
 </body>
 </html>

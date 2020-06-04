@@ -9,19 +9,66 @@
 	$phone_no = $_POST['phone_no'];
 	$address = $_POST['address'];
 
-	//fetch the data of the matched email id
-	$query = "select * from student_registration where email = '$email' ";
+	$encrypted_password = md5($password);
+
+	$filename = $_FILES['image']['name'];
+	
+	//destination of the file on the server
+	$destination = 'uploads/' . $filename;
+	
+	//get file extension
+	$extension = pathinfo($filename, PATHINFO_EXTENSION);
+	
+	//physical file on a temporary folder directory on the server
+	$file = $_FILES['image']['tmp_name'];
+	$size = $_FILES['image']['size'];
+	
+	$query = "select * from student_registration where email = '$email'";
 	$result = mysqli_query($con, $query);
-	//check the rows of result
-	if(mysqli_num_rows($result) > 0) { 
-		echo json_encode("Student already exists");
+	if($result->num_rows > 0) {
+		echo "Already Registered";
+		/*header("Location : addStudent.html");*/
+
 	} else {
-		//insert the data into the database table name student_registration
-		$insert_query = "INSERT INTO `student_registration` (`name`, `email`, `username`, `password`, `confirm_password`, `phone_no`, `address`, `created`) values ('$name', '$email', '$username', '$password', '$confirm_password', '$phone_no', '$address', now())";
-		if(mysqli_query($con, $insert_query)) {
-			echo json_encode("Student registered successfully");
+		if(!empty($filename)) {
+			//specific extensions allowed
+			if(!in_array($extension, ['jpeg', 'jpg', 'png'])) {
+				echo "File extension must be .jpeg, .jpg or .png"; 
+				/*header("Location : addStudent.html");*/ ?>
+			<?php } else {
+				//move the uploaded file to the destination folder i.e. upload
+				if(move_uploaded_file($file, $destination)) {
+					
+					//insert query to insert into the database into the student_registration table
+					$insert_query = "INSERT INTO `student_registration` (`name`, `email`, `username`, `password`, `confirm_password`, `encrypted_password`, `phone_no`, `address`, `image`, `created`) values ('$name', '$email', '$username', '$password', '$confirm_password', '$encrypted_password', '$phone_no', '$address', '$filename', now())";
+					if(mysqli_query($con, $insert_query)) {
+						echo("1"); 
+						/*header("Location : login.html");*/ ?>
+						
+					<?php } else {
+						echo("Student not registered. Please try again..."); 
+						/*header("Location : addStudent.html");*/ ?>
+						
+					<?php }
+				
+				} else {
+					echo "Failed to upload file.";
+					/*header("Location : addStudent.html");*/
+					 ?>
+				<?php }
+			}
 		} else {
-			echo json_encode("Student not registered. Please try again...");
+			//insert query to insert into the database into the student_registration table
+			$insert_query1 = "INSERT INTO `student_registration` (`name`, `email`, `username`, `password`, `confirm_password`, `encrypted_password`, `phone_no`, `address`, `created`) values ('$name', '$email', '$username', '$password', '$confirm_password', '$encrypted_password', '$phone_no', '$address', now())";
+			if(mysqli_query($con, $insert_query1)) {
+			echo("1");
+			/*header("Location : login.html");*/ ?>
+			
+			<?php } else {
+				echo("Student not registered. Please try again...");
+				/*header("Location : addStudent.html");*/ ?>
+			<?php }
 		}
 	}
+		
 ?>

@@ -4,7 +4,7 @@ include 'db_connect.php';
 //get the course name
 $course_name = $_GET['course_name'];
 //fetch the data of the given course name
-$query = "select * from add_course where name = '$course_name'";
+$query = "select * from courses where name = '$course_name'";
 $result = mysqli_query($con, $query); ?>
 
 <!DOCTYPE html>
@@ -12,6 +12,11 @@ $result = mysqli_query($con, $query); ?>
 <head>
 	<title>Download Notes</title>
 </head>
+<style>
+	td {
+		border: 1px solid black;
+	}
+</style>
 <body>
 	<table>
 		<thead>

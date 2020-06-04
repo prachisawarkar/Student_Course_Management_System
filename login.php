@@ -15,23 +15,14 @@ if(is_array($userdata) && !empty($userdata)) {
 	$_SESSION['valid'] = $validuser; //session username
 	$_SESSION['name'] = $userdata['name']; //session name
 	$_SESSION['id'] = $userdata['id']; //session id
-	if($userdata['username'] === $username and $userdata['password'] === $password) {
+
+	$encrypted_password = md5($password);
+	if($userdata['username'] === $username and $userdata['encrypted_password'] === $encrypted_password) {
 		echo ($validuser . " logged in successfully");
 	}
 } else {
 	echo ('Invalid Username or Password. Please do Sign Up!');
 }
-/*if(isset($_SESSION['valid'])) {
-	header("Location : view.php");
-}*/
-/*if($userdata['username'] === $username and $userdata['password'] === $password) {
-	echo json_encode("Login Successfull");
-} else if($userdata['username'] !== $username and $userdata['password'] === $password) {
-	echo json_encode("Username is incorrect");
-} else if($userdata['username'] === $username and $userdata['password'] !== $password) {
-	echo json_encode("Password is incorrect");
-} else {
-	echo json_encode("Username does not exists... Please Do Sign Up!");
-}*/
+
 
 ?>
