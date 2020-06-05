@@ -16,7 +16,7 @@ if(is_array($userdata) && !empty($userdata)) {
 	$_SESSION['name'] = $userdata['name']; //session name
 	$_SESSION['id'] = $userdata['id']; //session id
 	if($validuser === $username and $userdata['password'] === $password) {
-		echo ($validuser . " logged in successfully");
+		echo ("1");
 	}
 } else {
 	echo json_encode('Invalid Username or Password. Please do Sign Up!');

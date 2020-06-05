@@ -11,6 +11,12 @@ $course_name = $_GET['course_name']; // get the course name
 //query will fetch the data of the course name given
 $query = "select * from courses where name = '$course_name'";
 $result = mysqli_query($con, $query); 
+$row = $result -> fetch_assoc();
+$course_id = $row['id'];
+
+$sel_query = "select * from course_attachments where course_id = '$course_id'";
+$result1 = mysqli_query($con, $sel_query);
+
 ?>
 
 
@@ -107,18 +113,22 @@ $result = mysqli_query($con, $query);
 				<tbody>
 					<?php
 					// check the number of rows of sql query result 
-					if($result->num_rows > 0) { 
+					if($result1->num_rows > 0) { 
 						// fetch the rows
-						while($row = mysqli_fetch_array($result)) { ?>
+						while($row1 = mysqli_fetch_array($result1)) { ?>
 							<tr>
+							 	<!-- file name -->
+								<input type="text" name="notes_name" class="notes1 border-0 bg-transparent form-control text-dark" value="<?php echo $row1['notes'] ?>" style="display: none;" onchange="return rename(this.id)"> 
+								
 								<td> <!-- file name -->
-									<input type="text" name="notes" class="border-0 bg-transparent form-control text-dark" value="<?php echo $row['notes'] ?>">
+									<input type="text" name="notes" class="notes border-0 bg-transparent form-control text-dark" id="<?php echo $row1['id'] ?>" value="<?php echo $row1['notes'] ?>" onchange="return rename(this.id, this.value)">
 								</td>
+								<p id="msg"></p>
 								<td> <!-- download link -->
-									<a href="file_download.php?file_id=<?php echo $row['id'] ?>">Download</a>
+									<a href="file_download.php?file_id=<?php echo $row1['id'] ?>">Download</a>
 								</td>
 								<td> <!-- button to delete the files -->
-									<input type="button" name="delete" value="DELETE" class="btn btn-outline-danger" id="<?php echo $row['notes'] ?>" onclick="return delete_note(this.id)">
+									<input type="button" name="delete" value="DELETE" class="btn btn-outline-danger" id="<?php echo $row1['notes'] ?>" onclick="return delete_note(this.id)">
 								</td>
 							</tr>
 						<?php }
@@ -134,8 +144,8 @@ $result = mysqli_query($con, $query);
 			<div class="form-group">
 				<label for="notes" class="ml-3">Upload Notes</label>
 				<p  class="text-danger mt-0 ml-3">Note: File extension must be .pdf, .docx, .jpeg, .jpg or .png</p>
-				<input type="text" class="text-white h4" name="course_name" style="background-color: black; display: none;" value="<?php echo $course_name ?>"> <!-- give the course name in add_notes.php file -->
-				<input type="file" required name="notes[]" id="notes" class="form-control" multiple>
+				<input type="text" class="text-white h4" name="course_name" value="<?php echo $course_name ?>" style="display: none;"> <!-- give the course name in add_notes.php file -->
+				<input type="file" required name="notes[]" id="notes" class="form-control" multiple required>
 			</div>
 			<br>
 			<!-- <input type="button" onclick="return add_note(this.id)" name="add" value="ADD" id="<?php echo $course_name ?>" class="btn btn-primary"> -->
@@ -174,36 +184,68 @@ $result = mysqli_query($con, $query);
 			}
 		}
 
-		$('#addNotes').submit(function(e) {
-				e.preventDefault();
-				var file = $('#notes').val();
-				var formdata = new FormData(this);
-				console.log(formdata);
-				$('#submit').attr('disabled', 'disabled');
+		//function to save the phone number
+		function rename(id,name) {
+			/*var name1 = $(".notes").val();
+			console.log(name1);*/
+			var current_id = id;
+			var updated_name = name;
+			console.log(id);
+			console.log(name);
+
+			var ext = name.split('.').pop().toLowerCase();
+			if($.inArray(ext, ['docx', 'pdf', 'jpeg', 'jpg', 'png', 'xlsx']) == -1) {
+				$("#msg").html("<div class='alert alert-danger'>" + "Invalid Extension" + "</div>");
+				/*alert("invalid extension");*/
+			} else if('.notes' != '') {
 				$.ajax({
-					url : 'add_notes.php',
-					type : "POST",
-					data : formdata,
-					contentType : false,
-					processData : false,
-					cache : false,
-					beforeSend : function() {
-						$("#err").fadeOut();
+					url : "rename_file.php",
+					method : "POST",
+					data : {
+						current_id : current_id,
+						updated_name : updated_name,
+						/*name1 : name1*/
 					},
 					success : function(data) {
-						if(data == 1) {
-							/*$('#addNotes').load('#view');*/
-							/*document.location.href = 'add_delete_files.php';*/
-
-						} else {
-							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
-						}
+						$("#msg").html("<div class='alert alert-success'>" + data + "</div>");
 					},
-					error : function(e) {
-						$("#err").html(e).fadeIn();
+					error : function(xhr, status, message) {
+						$("#err").html("<div class='alert alert-danger'>" + message + "</div>");
 					}
 				});
+			}
+		}
+
+		$('#addNotes').submit(function(e) {
+			e.preventDefault();
+			var file = $('#notes').val();
+			var formdata = new FormData(this);
+			console.log(formdata);
+			$('#submit').attr('disabled', 'disabled');
+			$.ajax({
+				url : 'add_notes.php',
+				type : "POST",
+				data : formdata,
+				contentType : false,
+				processData : false,
+				cache : false,
+				beforeSend : function() {
+					$("#err").fadeOut();
+				},
+				success : function(data) {
+					if(data == 1) {
+						/*$('#addNotes').load('#view');*/
+						/*document.location.href = 'add_delete_files.php';*/
+
+					} else {
+						$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+					}
+				},
+				error : function(e) {
+					$("#err").html(e).fadeIn();
+				}
 			});
+		});
 	</script>
 </body>
 </html>

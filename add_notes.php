@@ -8,11 +8,10 @@ echo $course_name;
 $query = "select * from courses where name = '$course_name'";
 $result = mysqli_query($con, $query);
 $row = $result -> fetch_assoc(); //fecth the result
+
 //fetch data from the table
-$summary = $row['summary']; 
-$start_date = $row['start_date'];
-$end_date = $row['end_date']; 
-echo $summary;
+$course_id = $row['id'];
+
 //name of the uploaded file => $_FILES['notes']['name'];
 $totalfiles = count($_FILES['notes']['name']);
 //for loop for uploading multiple files
@@ -30,12 +29,12 @@ for($i = 0; $i < $totalfiles; $i++) {
 	//specific extensions allowed
 	if(!in_array($extension, ['docx', 'pdf', 'jpeg', 'jpg', 'png', 'xlsx'])) {
 		echo "File extension must be .pdf, .docx, .jpeg, .jpg or .png"; ?>
-		<a href="add_delete_files.php?course_name=<?php echo $course_name ?>" style="color : red;">ADD NOTES</a>
+
 	<?php } else {
 		//move the uploaded file to the destination folder i.e. upload
 		if(move_uploaded_file($file, $destination)) {		
 			//insert query to insert into the database into the courses table
-			$insert_query = "INSERT INTO `courses` (`name`, `summary`, `start_date`, `end_date`, `notes`, `status`) values ('$course_name', '$summary', '$start_date', '$end_date', '$filename', 0)";
+			$insert_query = "INSERT INTO `course_attachments` (`course_id`, `notes`) values ('$course_id', '$filename')";
 			if(mysqli_query($con, $insert_query)) {
 				echo("1");
 				/*header("Location : add_delete_files.php");*/

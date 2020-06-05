@@ -40,12 +40,22 @@ CREATE TABLE `student_management_system`.`courses` (
 `name` VARCHAR(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL , 
 `summary` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL , 
 `start_date` DATE NOT NULL ,
-`end_date` DATE NOT NULL , 
-`notes` varchar(300),
+`end_date` DATE NOT NULL ,
 created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 status varchar(100) collate utf8mb4_unicode_ci DEFAULT 0,
 PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT = 1;
+
+CREATE TABLE `student_management_system`.`course_attachments` ( 
+`id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT , 
+`course_id` MEDIUMINT(8) UNSIGNED NOT NULL,  
+`notes` varchar(300),
+created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+status varchar(100) collate utf8mb4_unicode_ci DEFAULT 0,
+PRIMARY KEY (`id`),
+constraint `course_notes_id` foreign key(course_id) references courses(id) ON DELETE CASCADE
 ) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT = 1;
 
 
@@ -62,14 +72,18 @@ modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAM
 status varchar(100) collate utf8mb4_unicode_ci DEFAULT 1,
 PRIMARY KEY (`id`),
 constraint `sms_student_id` foreign key (student_id) references student_registration(id) ON DELETE CASCADE,
-constraint `sms_add_course_id` foreign key (student_id) references courses(id) ON DELETE CASCADE
+constraint `sms_course_id` foreign key (course_id) references courses(id) ON DELETE CASCADE
 ) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci AUTO_INCREMENT = 1;
 
+
+select * from `student_management_system`.`teacher_info`;
 select * from `student_management_system`.`student_registration`;
 select * from `student_management_system`.`courses`;
+select * from `student_management_system`.`course_attachments`;
 select * from `student_management_system`.`my_courses`;
 
 
 drop table `student_management_system`.`student_registration`;
+drop table `student_management_system`.`courses`;
+drop table `student_management_system`.`course_attachments`;
 drop table `student_management_system`.`my_courses`;
-drop table `student_management_system`.`teacher_info`;

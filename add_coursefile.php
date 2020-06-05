@@ -6,19 +6,23 @@ include 'db_connect.php';
 	$start_date = $_POST['start_date'];
 	$end_date = $_POST['end_date'];
 
-	/*$errors = array(); //array to store the errors
-	if(empty($name)) {
-		array_push($errors, "Name of the course is required.");
+	$query = "select * from courses where name = '$name'";
+	$result = mysqli_query($con, $query);
+	if($result->num_rows > 0) {
+		echo "Course already enrolled!";
+	} else {
+		$insert_query = "INSERT INTO `courses` (`name`, `summary`, `start_date`, `end_date`, `status`) values ('$name', '$summary', '$start_date', '$end_date', 0)";
+		if(mysqli_query($con, $insert_query)) {	
+			echo "Course added successfully";
+
+		} else {
+			echo("Course is not added. Try again..."); 
+		}	
 	}
-	if(empty($summary)) {
-		array_push($errors, "Summary of the course is required.");
-	}
-	if(empty($start_date)) {
-		array_push($errors, "Start date of the course is required.");
-	}
-	if(empty($end_date)) {
-		array_push($errors, "End date of the course is required.");
-	}*/
+	$sel_query = "select * from courses where name = '$name'";
+	$result1 = mysqli_query($con, $sel_query);
+	$row1 = $result1 -> fetch_assoc();
+	$course_id = $row1['id'];
 	//name of the uploaded file
 	/*$filename = $_FILES['notes']['name'];
 	echo $filename;*/
@@ -45,9 +49,9 @@ include 'db_connect.php';
 			if(move_uploaded_file($file, $destination)) {
 			
 				//insert query to insert into the database into the courses table
-				$insert_query = "INSERT INTO `courses` (`name`, `summary`, `start_date`, `end_date`, `notes`, `status`) values ('$name', '$summary', '$start_date', '$end_date', '$filename', 0)";
-				if(mysqli_query($con, $insert_query)) {
-					echo("1"); 	
+				$insert_query1 = "INSERT INTO `course_attachments` (`course_id`, `notes`, `status`) values ('$course_id', '$filename', 1)";
+				if(mysqli_query($con, $insert_query1)) {
+					echo(""); 	
 				} else {
 					echo("Course is not added. Try again..."); 
 				}

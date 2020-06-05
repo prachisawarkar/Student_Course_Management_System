@@ -30,13 +30,13 @@
 				<label for="username">Username:</label>
 				<span class="required">*</span>
 				<span class="error_message" id="username_error"></span>
-				<input type="text" name="username" id="username" class="form-control" placeholder="Username">
+				<input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
 			</div>
 			<div class="form-group">
 				<label for="password">Password:</label>
 				<span class="required">*</span>
 				<span class="error_message" id="password_error"></span>
-				<input type="password" name="password" id="password" class="form-control" placeholder="Password">
+				<input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
 			</div>
 			<input type="button" name="signin" class="btn btn-primary mb-5" value="Sign in" id="signin">
 		</form>
@@ -51,13 +51,13 @@
 				<label for="tusername">Username:</label>
 				<span class="required">*</span>
 				<span class="error_message" id="tusername_error"></span>
-				<input type="text" name="tusername" id="tusername" class="form-control" placeholder="Username">
+				<input type="text" name="tusername" id="tusername" class="form-control" placeholder="Username" required>
 			</div>
 			<div class="form-group">
 				<label for="tpassword">Password:</label>
 				<span class="required">*</span>
 				<span class="error_message" id="tpassword_error"></span>
-				<input type="password" name="tpassword" id="tpassword" class="form-control" placeholder="Password">
+				<input type="password" name="tpassword" id="tpassword" class="form-control" placeholder="Password" required>
 			</div>
 			<input type="button" name="teacher_signin" class="btn btn-primary" value="Sign in" id="teacher_signin">
 		</form>
@@ -71,26 +71,7 @@
 			$('#signin').click(function() {
 				var username = $('#username').val();
 				var password = $('#password').val();
-
-				//validate username
-				if($.trim(username) == "") {
-					$('#username_error').fadeIn().html("Enter the Username");
-					setTimeout(function() {
-						$('#username_error').fadeOut();
-					}, 3000);
-					$('#username').focus();
-					return false;
-				}
-
-				//validate password
-				if($.trim(password) == "") {
-					$('#password_error').fadeIn().html("Enter the Password");
-					setTimeout(function() {
-						$('#password_error').fadeOut();
-					}, 3000);
-					$('#password').focus();
-					return false;
-				}
+				
 				//button get disabled on click
 				$('#signin').attr("disabled", "disabled");
 				$.ajax({
@@ -123,26 +104,6 @@
 				var tusername = $('#tusername').val();
 				var tpassword = $('#tpassword').val();
 
-				//validate username
-				if($.trim(tusername) == "") {
-					$('#tusername_error').fadeIn().html("Enter the Username");
-					setTimeout(function() {
-						$('#tusername_error').fadeOut();
-					}, 3000);
-					$('#tusername').focus();
-					return false;
-				}
-
-				//validate password
-				if($.trim(tpassword) == "") {
-					$('#tpassword_error').fadeIn().html("Enter the Password");
-					setTimeout(function() {
-						$('#tpassword_error').fadeOut();
-					}, 3000);
-					$('#tpassword').focus();
-					return false;
-				}
-
 				$('#teacher_signin').attr("disabled", "disabled");
 				$.ajax({
 					url : 'teacher_login.php',
@@ -153,10 +114,11 @@
 					},
 					cache : false,
 					success : function(data) {
-						if(data == tusername + " logged in successfully") {
+						if(data == 1) {
 							document.location.href = 'teacher_profile.php';
+						} else {
+							document.location.href = 'login.html';
 						}
-						document.location.href = 'login.html';
 					}
 				});
 			});

@@ -120,6 +120,7 @@ if(!isset($_SESSION['valid'])) {
 			<div class="form-group">
 				<label for="notes" class="mb-0">Upload Notes</label>
 				<p  class="text-danger mt-0">Note: File extension must be .pdf, .docx, .jpeg, .jpg or .png</p>
+				<span class="error_message" id="file_error"></span> <!-- to show the error -->
 				<input type="file" name="notes[]" id="notes" class="form-control" multiple>
 			</div>
 			<br>
@@ -140,42 +141,7 @@ if(!isset($_SESSION['valid'])) {
 				var start_date = $('#start_date').val();
 				var end_date = $('#end_date').val();
 				var file = $('#notes').val();
-
-				/*if($.trim(name) == '') {
-					$('#course_name_error').fadeIn().html("Please Enter the Course name");
-					setTimeout(function() {
-						$('#course_name_error').fadeOut();
-					}, 3000);
-					$('#name').focus();
-					return false;
-				}
-
-				if($.trim(summary) == '') {
-					$('#summary_error').fadeIn().html("Please enter the course summary");
-					setTimeout(function() {
-						$('#summary_error').fadeOut();
-					}, 3000);
-					$('#summary').focus();
-					return false;
-				}*/
-
-				/*if($.trim(start_date) == '') {
-					$('#start_date_error').fadeIn().html("Please enter the Start date");
-					setTimeout(function() {
-						$('#start_date_error').fadeOut();
-					}, 3000);
-					$('#start_date').focus();
-					return false;
-				}
-
-				if($.trim(end_date) == '') {
-					$('#end_date_error').fadeIn().html("Please enter the End date");
-					setTimeout(function() {
-						$('#end_date_error').fadeOut();
-					}, 3000);
-					$('#end_date').focus();
-					return false;
-				} else*/ 
+				var filename_pattern = /^\S*$/;
 				if(start_date > end_date) {
 					$('#end_date_error').fadeIn().html("Please enter the valid End date");
 					setTimeout(function() {
@@ -184,6 +150,15 @@ if(!isset($_SESSION['valid'])) {
 					$('#end_date').focus();
 					return false;
 				}
+
+				if(!filename_pattern.test(file)) {
+                    $('#file_error').fadeIn().html('File name should not contain spaces');
+                    setTimeout(function() {
+                        $('#file_error').fadeOut();
+                    }, 3000);
+                    $('#notes').focus();
+                    return false;
+                }
 
 				var formdata = new FormData(this);
 
@@ -199,11 +174,8 @@ if(!isset($_SESSION['valid'])) {
 						$("#err").fadeOut();
 					},
 					success : function(data) {
-						if(data == 1) {
-							$('#course_add_form').load('created_courses.php');
-						} else {
-							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
-						}
+						$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+						$('#course_add_form').load('created_courses.php');
 					},
 					error : function(e) {
 						$("#err").html(e).fadeIn();

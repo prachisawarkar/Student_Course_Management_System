@@ -5,7 +5,14 @@ include 'db_connect.php';
 $course_name = $_GET['course_name'];
 //fetch the data of the given course name
 $query = "select * from courses where name = '$course_name'";
-$result = mysqli_query($con, $query); ?>
+$result = mysqli_query($con, $query); 
+$row = $result -> fetch_assoc();
+$course_id = $row['id'];
+
+$sel_query = "select * from course_attachments where course_id = '$course_id'";
+$result1 = mysqli_query($con, $sel_query);
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -28,14 +35,14 @@ $result = mysqli_query($con, $query); ?>
 		<tbody>
 		<?php
 		//checking the number of rows
-		if($result->num_rows > 0) { 
-			while($row = mysqli_fetch_array($result)) { ?>
+		if($result1->num_rows > 0) { 
+			while($row1 = mysqli_fetch_array($result1)) { ?>
 				<tr>
 					<td>
-						<p class="text-white"><?php echo $row['notes'] ?></p>
+						<p class="text-white"><?php echo $row1['notes'] ?></p>
 					</td>
 					<td>
-						<a href="file_download.php?file_id=<?php echo $row['id'] ?>">Download</a> 
+						<a href="file_download.php?file_id=<?php echo $row1['id'] ?>">Download</a> 
 					</td>
 				</tr>
 			<?php }

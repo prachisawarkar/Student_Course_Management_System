@@ -93,7 +93,7 @@ $result = mysqli_query($con, $query);
 				<p id="msg"></p>
 				<thead>
 					<th class="border border-dark">Sr.No.</th>
-					<th class="border border-dark">Name</th>
+					<th class="border border-dark">Name of the Course</th>
 					<th class="border border-dark">Summary</th>
 					<th class="border border-dark">Start date</th>
 					<th class="border border-dark">End date</th>
@@ -139,19 +139,19 @@ $result = mysqli_query($con, $query);
 									</button>
 								</td>
 
-								<td class="text-center"> <!-- bag icon to display the enrolled students in the course -->
+								<!-- <td class="text-center"> 
 									<?php
 									echo "<a href=\"course_enrolled_students.php?id=$row[id]\">"; ?>
 										<img src="bag.png" alt="bag" width="25px" height="25px">
 									<?php echo "</a>";
 									?>	
-								</td>
+								</td> -->
 
-								<!-- <td class="text-center"> 							
+								<td class="text-center"> <!-- bag icon to display the enrolled students in the course -->							
 									<button type="button" onclick="return on_click(this.id)" id="<?php echo $row['id'] ?>" > 
 										<img src="bag.png" alt="bag" width="25px" height="25px">
 									</button>
-								</td> -->
+								</td>
 								<td>
 									<input type="button" id="<?php echo $row['name']; ?>" name="delete_id" class="btn btn-sm btn-primary" value="DELETE" onclick="delete_course(this.id)">
 								</td>
@@ -222,23 +222,24 @@ $result = mysqli_query($con, $query);
 		}
 
 		// bag icon
-		/*function on_click(id) {
+		function on_click(id) {
 			$id = id;
 			var course_id = id; 
 			console.log($id);
 			$.ajax({
-				url : "toggleCourseStatus.php",
+				url : "course_enrolled_students.php",
 				type : "POST",
 				data : {
-					status_id : status_id
+					course_id : course_id
 				},
 				success : function(data) {
-					$("#navbar").hide();
-					$(".add_course_btn").hide();
-					$('#created_courses').load('created_courses.php');
+					/*$("#navbar").hide();
+					$(".add_course_btn").hide();*/
+					/*$('#created_courses').load('created_courses.php');*/
+					document.location.href = 'course_enrolled_students.php';
 				}
 			});
-		}*/
+		}
 
 		//function to save the name
 		function autosave_name(id, name) {
