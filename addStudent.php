@@ -27,7 +27,7 @@
 	$file = $_FILES['image']['tmp_name'];
 	$size = $_FILES['image']['size'];
 	
-	$query = "select * from users where email = '$email'";
+	$query = "select * from users where email = '$email' and username = '$username'";
 	$result = mysqli_query($con, $query);
 	if($result->num_rows > 0) {
 		echo "Already Registered";

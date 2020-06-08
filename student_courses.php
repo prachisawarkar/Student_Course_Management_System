@@ -78,8 +78,8 @@ $result = mysqli_query($con, $query);
 	    </nav> 
 	</div>
 	<!-- display all the added courses -->
-	<div class="container">
-		<h1 class="text-primary mb-3 heading heading">All Courses</h1>
+	<div class="container" id="all_courses_page">
+		<h1 class="text-primary mb-3 heading">All Courses</h1>
 		<div class="msg mb-5"></div>
 		<form method="post" action="student_courses.php" id="student_courses">
 			<div class="row">

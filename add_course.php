@@ -142,7 +142,7 @@ if(!isset($_SESSION['valid'])) {
 				var start_date = $('#start_date').val();
 				var end_date = $('#end_date').val();
 				var file = $('#notes').val();
-				alert(file);
+				
 				var filename_pattern = /^\S*$/;
 				if(start_date > end_date) {
 					$('#end_date_error').fadeIn().html("Please enter the valid End date");

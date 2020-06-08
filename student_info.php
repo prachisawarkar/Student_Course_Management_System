@@ -200,10 +200,11 @@ $result = mysqli_query($con, $query);
 					},
 					success : function(data) {
 						$("#msg").html("<div class='alert alert-success'>" + data + "</div>");
-						/*alert(data);*/
+						$("#msg").fadeOut(1500);
 					},
 					error : function(xhr, status, message) {
 						$("#err").html("<div class='alert alert-danger'>" + message + "</div>");
+						$("#msg").fadeOut(2000);
 					}
 				});
 			}
@@ -246,10 +247,11 @@ $result = mysqli_query($con, $query);
 					},
 					success : function(data) {
 						$("#msg").html("<div class='alert alert-success'>" + data + "</div>");
-					
+						$("#msg").fadeOut(1500);					
 					},
 					error : function(xhr, status, message) {
 						$("#err").html("<div class='alert alert-danger'>" + message + "</div>");
+						$("#err").fadeOut(2000);
 					}
 				});
 			}
@@ -273,7 +275,7 @@ $result = mysqli_query($con, $query);
 						} else {
 							//to display the updated list without refreshing the page
 							$("#navbar").hide();
-							$('#student_info').load(student_info.php);
+							$('#student_info').load('student_info.php');
 						}
 					}
 				});

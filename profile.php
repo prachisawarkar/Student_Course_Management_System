@@ -83,7 +83,7 @@ $row = $result -> fetch_assoc(); //fetch data
         </nav>
     </div>
     <!-- profile page -->
-    <div class="container">
+    <div class="container" id="profile_info">
         <div class="row border border-primary">
              
             <div class="col-5 text-center">
@@ -93,7 +93,7 @@ $row = $result -> fetch_assoc(); //fetch data
                     <form method="post" enctype="multipart/form-data" class="border border-primary rounded mt-2" id="update_profile_image" name="update_profile_image" style="display: none;">
                             <p style="font-size: 11px" class="mb-0 mt-2 text-danger">File extension must be .jpeg, .jpg or .png</p>
                             <input type="file" name="profile" id="profile" class="form-control profile" required>
-                            <input type="submit" name="submit" id="submit" class="btn btn-outline-primary" value="Submit">
+                            <input type="button" name="submit" id="submit" class="btn btn-outline-primary" value="Submit">
                     </form>
                 </div>
             </div>
@@ -159,14 +159,15 @@ $row = $result -> fetch_assoc(); //fetch data
 
 	</div>
 
-    <script type="text/javascript" 
-            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- <script type="text/javascript" 
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function() {
             $("#update_profile_image_btn").click(function(){
                 $("#update_profile_image").fadeIn();
-                $("#update_profile_image").submit(function() {
+                $("#update_profile_image").click(function() {
                                    
                     var profile = $("#profile").val();
                     console.log(profile);
@@ -191,7 +192,8 @@ $row = $result -> fetch_assoc(); //fetch data
                             }*/
                         }).done(function(data) {
                             $("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
-                            $("update_profile_image").load(profile.php);
+                            $("#profile_info").load('profile.php');
+                            $(".top_section").hide();
                         }).fail(function(data) {
                             $("#msg").html("<div class='alert alert-danger'>" + "Fail" + "</div>");
                         });

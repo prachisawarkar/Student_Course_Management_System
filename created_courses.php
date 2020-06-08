@@ -233,13 +233,12 @@ $result = mysqli_query($con, $query);
 					},
 					success : function(data) {
 						if(data == 1) {
-							/*$("#msg").html("<div class='alert alert-danger'>" + Course not deleted. Please try again... + "</div>");*/
-							/*alert("Course not deleted. Please try again...");*/
+							$("#msg").html("<div class='alert alert-danger'>" + "Course not deleted. Please try again..." + "</div>");
 						} else {
-							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
-							$("#navbar").hide();
-							$(".add_course_btn").hide();
-							$("#created_courses").load("#created_courses");
+							$(".top_section").hide();
+							$("#show_courses").load("#show_courses");
+							/*$(".add_course_btn").hide();
+							$("#created_courses").load("#created_courses");*/
 						}
 					}
 				});
@@ -265,26 +264,6 @@ $result = mysqli_query($con, $query);
 				}
 			});
 		}
-
-		// bag icon
-		/*function on_click(id) {
-			$id = id;
-			var get_course_id = id; 
-			console.log($id);
-			$.ajax({
-				url : "course_enrolled_students.php",
-				type : "POST",
-				data : {
-					get_course_id : get_course_id
-				},
-				success : function(data) {
-					//$("#navbar").hide();
-					//$(".add_course_btn").hide();
-					//$('#created_courses').load('created_courses.php');
-					document.location.href = 'course_enrolled_students.php';
-				}
-			});
-		}*/
 
 		// bag icon -> enrolled students
 		function on_click(id) {

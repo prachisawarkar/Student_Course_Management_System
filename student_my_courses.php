@@ -87,7 +87,7 @@ $result1 = mysqli_query($con, $expired_courses);*/
 	    </nav>
 	</div>
 	<!-- show all the enrolled courses -->
-	<div class="container">
+	<div class="container" id="my_courses" >
 		<h1 class="text-primary">My Courses</h1>
 		<?php
 		if($result->num_rows > 0) {
@@ -162,6 +162,7 @@ $result1 = mysqli_query($con, $expired_courses);*/
     				course_name : course_name
     			},
     			success : function(data) {
+    				/*$("#my_courses").load('student_my_courses.php');*/
     				$("#attachments").html(data);
     			}
     		});
