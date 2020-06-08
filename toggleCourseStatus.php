@@ -14,11 +14,11 @@ $row = $result -> fetch_assoc();
 $status = $row['status']; //store status into variable status
 
 if($status == 1) {//green
-	//update the status in student_registration table
+	//update the status in courses table
 	mysqli_query($con, "update courses set status = '0' where id = '$id'");
 
 } else if($status == 0) { //red
-	//update the status in student_registration table
+	//update the status in courses table
 	mysqli_query($con, "update courses set status = '1' where id = '$id'");
 }
 

@@ -11,7 +11,7 @@ if(isset($_POST['updated_phone_no'])) {
 	$phone_no = $_POST['updated_phone_no']; //fetch the updated phone number
 	
 	// update query to update data in database
-	$update_query = "update student_registration set phone_no = '$phone_no' where id = '$id'"; 
+	$update_query = "update users set phone_no = '$phone_no' where id = '$id'"; 
 	mysqli_query($con, $update_query);
 	echo "Data Updated Successfully";
 	/* to save the changed email id */
@@ -20,7 +20,7 @@ if(isset($_POST['updated_phone_no'])) {
 	$email = $_POST['updated_email_id']; //fetch the updated email id
 	
 	// update query to update data in database
-	$update_query = "update student_registration set email = '$email' where id = '$id'"; 
+	$update_query = "update users set email = '$email' where id = '$id'"; 
 	mysqli_query($con, $update_query);
 	echo "Data Updated Successfully";
 } else {

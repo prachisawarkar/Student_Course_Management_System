@@ -72,7 +72,7 @@ if(!isset($_SESSION['valid'])) {
             </div>
         </nav>
 	</div>
-	<div class="container">
+	<div class="container" id="add_course">
 		<h1>Add Course</h1>
 		<!-- form to add the course -->
 		<form method="post" name="course_form" id="course_add_form" enctype="multipart/form-data">
@@ -129,9 +129,10 @@ if(!isset($_SESSION['valid'])) {
 
 		</form>
 	</div>
-	<script type="text/javascript" 
+	<!-- <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-    </script>
+    </script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#course_add_form').submit(function(e) {
@@ -141,6 +142,7 @@ if(!isset($_SESSION['valid'])) {
 				var start_date = $('#start_date').val();
 				var end_date = $('#end_date').val();
 				var file = $('#notes').val();
+				alert(file);
 				var filename_pattern = /^\S*$/;
 				if(start_date > end_date) {
 					$('#end_date_error').fadeIn().html("Please enter the valid End date");
@@ -175,7 +177,8 @@ if(!isset($_SESSION['valid'])) {
 					},
 					success : function(data) {
 						$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
-						$('#course_add_form').load('created_courses.php');
+						$("#navbar").hide();
+						$('#add_course').load('created_courses.php');
 					},
 					error : function(e) {
 						$("#err").html(e).fadeIn();

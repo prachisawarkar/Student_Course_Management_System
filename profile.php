@@ -8,7 +8,7 @@ if(!isset($_SESSION['valid'])) {
 include 'db_connect.php';
 
 //select the data of the id whose session is active
-$query = "select * from student_registration where id = " . $_SESSION['id'] ;
+$query = "select * from users where id = " . $_SESSION['id'] ;
 $result = mysqli_query($con, $query);
 $row = $result -> fetch_assoc(); //fetch data
 
@@ -85,8 +85,17 @@ $row = $result -> fetch_assoc(); //fetch data
     <!-- profile page -->
     <div class="container">
         <div class="row border border-primary">
+             
             <div class="col-5 text-center">
-                <img src="<?php echo 'uploads/'.$row['image'] ?>" alt="" class="rounded-circle" width="248px" height="268px">
+                <img src="<?php echo 'uploads/' . $row['image'] ?>" alt="" class="rounded-circle" width="248px" height="268px">
+                <div class="mt-2">
+                    <button class="btn btn-outline-primary" id="update_profile_image_btn">Change Profile Picture</button>
+                    <form method="post" enctype="multipart/form-data" class="border border-primary rounded mt-2" id="update_profile_image" name="update_profile_image" style="display: none;">
+                            <p style="font-size: 11px" class="mb-0 mt-2 text-danger">File extension must be .jpeg, .jpg or .png</p>
+                            <input type="file" name="profile" id="profile" class="form-control profile" required>
+                            <input type="submit" name="submit" id="submit" class="btn btn-outline-primary" value="Submit">
+                    </form>
+                </div>
             </div>
             <div class="col">
                 <div class="row border"> <!-- name of the student -->
@@ -94,8 +103,9 @@ $row = $result -> fetch_assoc(); //fetch data
                         <label class="text-primary"><h4>Name: </h4></label>
                     </div>
                     <div class="col-md-8"> 
-                        <!-- <input type="text" name="name" id="name" value = "<?php echo $row['name'] ?>" class="border-0"> -->
-                        <p class="info"><?php echo $row['name'] ?></p> 
+                        <span id="name_error"></span>
+                        <input type="text" name="name" id="<?php echo $_SESSION['id'] ?>" onchange="return edit_name(this.id, this.value)" value = "<?php echo $row['name'] ?>" class="border-0 bg-transparent name info" required>
+                        <!-- <p class="info"><?php echo $row['name'] ?></p> --> 
                     </div>
                 </div>
                 <div class="row border"> <!-- email id of the student -->
@@ -111,8 +121,9 @@ $row = $result -> fetch_assoc(); //fetch data
                         <label class="text-primary"><h4>Username: </h4></label>
                     </div>
                     <div class="col-md-8">
-                        <!-- <input type="text" name="username" id="username" value = "<?php echo $row['username'] ?>" class="border-0"> -->
-                        <p class="info"><?php echo $row['username'] ?></p>
+                        <span id="username_error"></span>
+                        <input type="text" name="username" id="<?php echo $_SESSION['id'] ?>" onchange="return edit_username(this.id, this.value)" value = "<?php echo $row['username'] ?>" class="border-0 bg-transparent username info" required>
+                        <!-- <p class="info"><?php echo $row['username'] ?></p> -->
                     </div>
                 </div>
                 <div class="row border"> <!-- phone number of the student -->
@@ -128,10 +139,11 @@ $row = $result -> fetch_assoc(); //fetch data
                         <label class="text-primary"><h4>Address: </h4></label>
                     </div>
                     <div class="col-md-8">
-                        <!-- <input type="text" name="address" id="address" value = "<?php echo $row['address'] ?>" class="border-0"> -->
-                        <p class="info"><?php echo $row['address'] ?></p>
-                    </div>
+                        <span id="address_error"></span>
+                        <input type="text" name="address" id="<?php echo $_SESSION['id'] ?>" onchange="return edit_address(this.id, this.value)" value = "<?php echo $row['address'] ?>" class="border-0 bg-transparent address info" required> 
                 </div>
+                        <!-- <p class="info"><?php echo $row['address'] ?></p> -->
+                    </div>
                 <div class="row border"> <!-- registration date and time -->
                     <div class="col-md-3">
                         <label class="text-primary"><h4>Joining Date & Time: </h4></label>
@@ -143,41 +155,129 @@ $row = $result -> fetch_assoc(); //fetch data
             </div>
         </div>
         <br>
+        <p id="msg"></p>
 
 	</div>
 
-    <!-- <script type="text/javascript" 
+    <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
+
         $(document).ready(function() {
-            $('#save').click(function() {
-                /*function autosave() {*/
-                    //fetch the values of the input field
-                    var name = $('#name').val(); 
-                    var username = $('#username').val();
-                    var address = $('#address').val();
-                    /*console.log(name);
-                    console.log(username);
-                    console.log(address);*/
-                    $.ajax({
-                        url : "edit_student_profile.php",
-                        method : "POST",
-                        data : {
-                            name: name,
-                            username : username,
-                            address : address
-                        },
-                        success : function(data) {
-                            alert(data);
-                        }
-                    });
-                /*);*/
-                /*setInterval(function() {
-                autosave();
-            }, 5000);*/
-            });   
-            
+            $("#update_profile_image_btn").click(function(){
+                $("#update_profile_image").fadeIn();
+                $("#update_profile_image").submit(function() {
+                                   
+                    var profile = $("#profile").val();
+                    console.log(profile);
+
+                    // to validate extension
+                    var ext = profile.split('.').pop().toLowerCase();
+                    if($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                        $("#msg").html("<div class='alert alert-danger'>" + "Invalid file extension" + "</div>");
+                    } else if('.profile' != '') {
+                        var formdata = new FormData(this);
+                        console.log(formdata);
+
+                        $.post({
+                            url : 'update_profile_image.php',
+                            type : "POST",
+                            data : formdata,
+                            contentType : false,
+                            processData : false,
+                            cache : false
+                            /*beforeSend : function() {
+                                $("#msg").fadeIn();
+                            }*/
+                        }).done(function(data) {
+                            $("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+                            $("update_profile_image").load(profile.php);
+                        }).fail(function(data) {
+                            $("#msg").html("<div class='alert alert-danger'>" + "Fail" + "</div>");
+                        });
+                    }
+                });
+            });
         });
-    </script> -->
+
+        //function to save the name
+        function edit_name(id,name) {
+            var current_id = id;
+            var updated_name = name;
+
+            // validate the name
+            var name_pattern = /^[A-Za-z ]{0,70}$/i;
+            if(!name_pattern.test(updated_name)) {
+                $('#name_error').fadeIn().html('Please enter valid name');
+                setTimeout(function() {
+                    $('#name_error').fadeOut();
+                }, 3000);
+                $('#name').focus();
+                return false;
+            }
+
+            if('.name' != '') {
+                $.ajax({
+                    url : "profile_edit.php",
+                    method : "POST",
+                    data : {
+                        current_id : current_id,
+                        updated_name : updated_name
+                    },
+                    success : function(data) {
+                        $("#msg").html("<div class='alert alert-success'>" + data + "</div>");
+                    }
+                });
+            }
+        }
+
+        //function to save the username
+        function edit_username(id, username) {
+            var current_id = id;
+            var updated_username = username;
+            var username_pattern = /^\S*$/;
+            if(!username_pattern.test(updated_username)) {
+                $("#username_error").fadeIn().html("Please enter valid username with no space");
+                setTimeOut(function(){
+                    $("#username_error").fadeOut();
+                }, 3000);
+                $("#username").focus();
+                return false;
+            }
+            if('.username' != '') {
+                $.ajax({
+                    url : 'profile_edit.php',
+                    type : "POST",
+                    data : {
+                        current_id : current_id,
+                        updated_username : updated_username
+                    },
+                    success : function(data) {
+                        $("#msg").html("<div class='alert alert-success'>" + data + "</div>");
+                    }
+                });
+            }
+        }
+
+        //function to save the address
+        function edit_address(id, address) {
+            var current_id = id;
+            var updated_address = address;
+            
+            if('.address' != '') {
+                $.ajax({
+                    url : 'profile_edit.php',
+                    type : "POST",
+                    data : {
+                        current_id : current_id,
+                        updated_address : updated_address
+                    },
+                    success : function(data) {
+                        $("#msg").html("<div class='alert alert-success'>" + data + "</div>");
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>

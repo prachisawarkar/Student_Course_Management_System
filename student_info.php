@@ -6,8 +6,8 @@ if(!isset($_SESSION['valid'])) {
 // database connection file
 include 'db_connect.php';
 
-//select and fetch the data of students from student_registration table
-$query = 'select * from student_registration';
+//select and fetch the data of students from users table
+$query = 'select * from users where role_id = 2';
 $result = mysqli_query($con, $query);
 
 ?>
@@ -42,6 +42,9 @@ $result = mysqli_query($con, $query);
             background-repeat: no-repeat;
             margin-top :  100px;
             margin-bottom: 100px; 
+        }
+        th, td {
+        	border: 1px solid #293946;
         }
     </style>
 
@@ -84,16 +87,16 @@ $result = mysqli_query($con, $query);
 	</div>
 	<div class="container">
     <!-- display the student data -->
-		<form action="student_info.php" method="post" accept-charset="utf-8" id="student_info">
+		<form method="post" accept-charset="utf-8" id="student_info">
 			<table style="border:1px solid:red">
 				<thead>
-					<th class="border border-primary">Id</th>
-					<th class="border border-primary">Name</th>
-					<th class="border border-primary">Email</th>
-					<th class="border border-primary">Phone No.</th>
-					<th class="border border-primary">Address</th>
-					<th class="border border-primary">Status</th>
-					<th class="border border-primary">Action</th>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone No.</th>
+					<th>Address</th>
+					<th>Status</th>
+					<th>Action</th>
 				</thead>
 				<tbody>
 					<?php 
@@ -102,30 +105,30 @@ $result = mysqli_query($con, $query);
 						while($row = $result->fetch_assoc()) { ?> <!-- fetch all the data of all the student -->
 							<tr>
 								<td> <!-- id of the student -->
-									<input type="text" name="id" value="<?php echo $row['id']; ?>">
+									<input type="text" class="form-control bg-transparent text-dark overflow-auto" name="id" value="<?php echo $row['id']; ?>">
 								</td>
 								<td> <!-- name of the student -->
-									<input type="text" name="name" value="<?php echo $row['name']; ?>" >
+									<input type="text" class="form-control bg-transparent text-dark overflow-auto" name="name" value="<?php echo $row['name']; ?>" >
 								</td>
 								<td> <!-- email of the student -->
 									<span class="error_message" id="email_error" style="color : red;"></span>
 									<!-- function called will save the data on getting change -->
-									<input type="text" name="email" class="email" id="<?php echo $row['id'] ?>" value="<?php echo $row['email'] ?>" onchange="return autosave_email(this.id, this.value)" >
+									<input type="text" name="email" class="email form-control bg-transparent text-dark" id="<?php echo $row['id'] ?>" value="<?php echo $row['email'] ?>" onchange="return autosave_email(this.id, this.value)" >
 								</td>
 								<p id="msg"></p>
 								<td>
 									<!-- phone number of the student -->
 									<span class="error_message" id="phone_error" style="color : red;"></span>
 									<!-- function called will save the data on getting change -->
-									<input type="text" name="phone_no" class="phone_no" id="<?php echo $row['id'] ?>" value="<?php echo $row['phone_no'] ?>" onchange="return autosave_phoneno(this.id, this.value)" >							
+									<input type="text" name="phone_no" class="phone_no form-control bg-transparent text-dark overflow-auto" id="<?php echo $row['id'] ?>" value="<?php echo $row['phone_no'] ?>" onchange="return autosave_phoneno(this.id, this.value)" >							
 								</td>
 								<td> <!-- address of the student -->
-									<input type="text" name="address" value="<?php echo $row['address'] ?>" >
+									<input type="text" class="form-control bg-transparent text-dark overflow-auto" name="address" value="<?php echo $row['address'] ?>" >
 								</td>
 								<!-- store the status in variable -->
 								<?php $status = $row['status']; ?> 
 
-								<td> <!-- status toggle on 1 - green and 0 - red -->
+								<td class="text-center"> <!-- status toggle on 1 - green and 0 - red -->
 									<button type="button" onclick = "return statusChange(this.id)" id="<?php echo $row['id'] ?>">
 										<?php 
 										if($status == 1) { ?>
@@ -139,7 +142,7 @@ $result = mysqli_query($con, $query);
 								<td> 
 									<!-- <p id="msg"></p> -->
 									<!-- delete button to delete the student -->
-									<input type="button" name="delete_id" id="<?php echo $row['id'] ?>" value = "DELETE" onclick = "return on_click(this.id)">
+									<input type="button" class="form-control btn btn-outline-primary text-dark overflow-auto" name="delete_id" id="<?php echo $row['id'] ?>" value = "DELETE" onclick = "return on_click(this.id)">
 								</td>
 							</tr>
 							<?php
@@ -154,10 +157,14 @@ $result = mysqli_query($con, $query);
 		<p id="err"></p>
 	</div>
 
-	<script type="text/javascript" 
+	<!-- <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-    </script>
-	<script type="text/javascript">
+    </script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+	<script type="text/javascript"> 
 		//function to save the phone number
 		function autosave_phoneno(id,phone_no) {
 			var current_id = id;
@@ -261,12 +268,12 @@ $result = mysqli_query($con, $query);
 					data : {delete_id : delete_id},
 					success : function(data) {
 						if(data == 1) {
-							/*$("#msg").html("<div class='alert alert-danger'>" + Student record not deleted + "</div>");*/
-							alert(data);
+							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+							/*alert(data);*/
 						} else {
 							//to display the updated list without refreshing the page
 							$("#navbar").hide();
-							$('#student_info').load('student_info.php');
+							$('#student_info').load(student_info.php);
 						}
 					}
 				});

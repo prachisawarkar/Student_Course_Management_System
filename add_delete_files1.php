@@ -7,9 +7,8 @@ if(!isset($_SESSION['valid'])) {
 }
 //database connection file
 include 'db_connect.php';
-$course_name = $_POST['course_name']; // get the course name 
-//query will fetch the data of the course name given
-$_SESSION['id'] = $course_name;
+$course_name =  $_SESSION['id'];
+
 $query = "select * from courses where name = '$course_name'";
 $result = mysqli_query($con, $query); 
 $row = $result -> fetch_assoc();
@@ -53,8 +52,8 @@ $result1 = mysqli_query($con, $sel_query);
     </style>
 </head>
 <body>
-	<div class="container top_section">
-		<!-- navigation bar -->
+	<!-- <div class="container top_section">
+		// navigation bar 
 		<nav class="navbar navbar-expand-lg navbar-light text-center" id="navbar">
 	        <a class="navbar-brand mr-4 text-" href="#"> <h1 class="text-primary">
 	        	<?php echo $_SESSION['name'] ?></h1> </a>
@@ -88,11 +87,11 @@ $result1 = mysqli_query($con, $sel_query);
 	            
 	        </div>
 	    </nav>
-	</div>
-	<div class="container" id="add_delete_attachments">
+	</div> -->
+	<div class="container" id="add_delete_attchments">
 		<!-- button to add notes -->
 		<!-- <a href="#addNotes"> -->
-			<button type="button" class="mb-5 btn btn-primary add_notes_btn" id="<?php echo $_POST['course_name']; ?>" onclick="return goto_add_notes(this.id)" > ADD NOTES </button>
+			<!-- <button type="button" class="mb-5 btn btn-primary add_notes_btn" id="<?php echo $_POST['course_name']; ?>" onclick="return goto_add_notes(this.id)" > ADD NOTES </button> -->
 		<!-- </a> -->
 		<div id="add_notes"></div>
 		<!-- form to display the data on the screen -->
@@ -139,18 +138,6 @@ $result1 = mysqli_query($con, $sel_query);
 				</tbody>
 			</table>
 		</form>
-
-		<!-- form to add/upload the notes -->
-		<!-- <form method="post" class="rounded add_notes_form mt-5" enctype="multipart/form-data" id="addNotes" style="border: 1px solid black;">
-			<div class="form-group">
-				<label for="notes" class="ml-3">Upload Notes</label>
-				<p  class="text-danger mt-0 ml-3">Note: File extension must be .pdf, .docx, .jpeg, .jpg or .png</p>
-				<input type="text" class="text-white h4" name="course_name" value="<?php echo $course_name ?>" style="display: none;"> give the course name in add_notes.php file
-				<input type="file" required name="notes[]" id="notes" class="form-control" multiple required>
-			</div>
-			<br>
-			<input type="submit" name="submit" value="ADD" id="submit" class="btn btn-primary ml-3">
-		</form> -->
 	</div>
 
 	<!-- <script type="text/javascript" 
@@ -193,14 +180,11 @@ $result1 = mysqli_query($con, $sel_query);
 							alert("File not deleted");
 						} else {
 							//to display the updated list without refreshing the page
-							/*$("#navbar").hide();
-							$(".add_notes_btn").hide();
-							$(".add_notes_form").hide();
-							$("#view").load("#view");
-							$("#navbar").hide();
-							$("#add_delete_attachments").load(add_delete_files1.php);
-							$("#navbar").hide();*/
-							$("#add_delete_attachments").load('add_delete_files1.php');
+							/*$(".add_notes_btn").hide();
+							$(".add_notes_form").hide();*/
+							/*$("#").load(created_courses.php).hide();*/
+							
+							$("#add_delete_attchments").load('add_delete_files1.php');
 						}
 					}
 				});

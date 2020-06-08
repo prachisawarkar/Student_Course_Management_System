@@ -42,7 +42,7 @@ if(isset($_POST['updated_name'])) {
 	$end_date = $_POST['updated_end_date']; //fetch the updated end date
 	
 	// update query to update data in database
-	$update_query = "update student_registration set end_date = '$end_date' where id = '$id'"; 
+	$update_query = "update users set end_date = '$end_date' where id = '$id'"; 
 	mysqli_query($con, $update_query);
 	echo "Data Updated Successfully";
 } else {

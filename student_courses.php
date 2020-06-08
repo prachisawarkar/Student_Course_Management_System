@@ -6,7 +6,7 @@ if(!$_SESSION['valid']) {
 //database connection file
 include 'db_connect.php';
 //select data
-$query = "select * from courses group by name order by id asc";
+$query = "select * from courses";
 $result = mysqli_query($con, $query);
 ?>
 
@@ -185,7 +185,7 @@ $result = mysqli_query($con, $query);
 						$('.heading').hide();
 						$("#student_courses").load("student_my_courses.php");
 					} else {
-						$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
+						$(".msg").html("<div class='alert alert-danger'>" + data + "</div>");
 					}
 					/*document.location.href = "student_my_courses.php";*/
 					

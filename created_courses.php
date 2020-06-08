@@ -82,13 +82,14 @@ $result = mysqli_query($con, $query);
 	        </div>
 	    </nav>
 	</div>
-	<div class="container">
+	<div class="container" id="show_courses">
 		<!-- button to add courses -->
-		<a href="add_course.php">
-			<button class="btn btn-lg btn-primary mb-5 add_course_btn">ADD COURSES</button>
-		</a>
+		<!-- <a href="add_course.php"> -->
+			<button type="button" class="btn btn-lg btn-primary mb-5 add_course_btn" onclick="return goto_add_course()">ADD COURSES</button>
+			<div id="add_course"></div>
+		<!-- </a> -->
 		<!-- display all the added courses -->
-		<form action="created_course.php" method="post" id="created_courses">
+		<form method="post" id="created_courses">
 			<table style="border : 1px solid black;">
 				<p id="msg"></p>
 				<thead>
@@ -106,9 +107,10 @@ $result = mysqli_query($con, $query);
 					<?php
 					if(mysqli_num_rows($result) > 0) { /* check the number of rows fetched by the result*/
 						while($row = $result -> fetch_assoc()) { ?>
+							<?php $course_id = $row['id']; ?>
 							<tr>
 								<td> <!-- id of the course -->
-									<input type="text" class="form-control" name="id" value="<?php echo $row['id'] ?>" required>
+									<input type="text" class="form-control" name="id" value="<?php echo $row['id'] ?>">
 								</td>
 								<td> <!-- name of the student -->
 									<!-- function called will save the data on getting change -->
@@ -139,42 +141,85 @@ $result = mysqli_query($con, $query);
 									</button>
 								</td>
 
-								<!-- <td class="text-center"> 
-									<?php
-									echo "<a href=\"course_enrolled_students.php?id=$row[id]\">"; ?>
-										<img src="bag.png" alt="bag" width="25px" height="25px">
-									<?php echo "</a>";
-									?>	
-								</td> -->
 
-								<td class="text-center"> <!-- bag icon to display the enrolled students in the course -->							
-									<button type="button" onclick="return on_click(this.id)" id="<?php echo $row['id'] ?>" > 
+
+								<!-- bag icon to display the enrolled students in the course -->
+								<td class="text-center"> 					
+									<button type="button" id="<?php echo $row['id'] ?>" onclick = "return on_click(this.id)"> 
 										<img src="bag.png" alt="bag" width="25px" height="25px">
-									</button>
+									</button> 
 								</td>
 								<td>
 									<input type="button" id="<?php echo $row['name']; ?>" name="delete_id" class="btn btn-sm btn-primary" value="DELETE" onclick="delete_course(this.id)">
 								</td>
 								<td class="text-center"> <!-- notes crud  -->
-									<a href="add_delete_files.php?course_name=<?php echo $row['name'] ?>">
+									<!-- <a href="add_delete_files.php?course_name=<?php echo $row['name'] ?>">
 									
 										<img src="notes_icon2.jpg" alt="" width="25px;" height="25px">
-									</a>
+									</a> -->
+									<button type="button" id="<?php echo $row['name'] ?>" onclick = "return goto_attachments(this.id)"> 
+										<img src="notes_icon2.jpg" alt="" width="25px;" height="25px">
+									</button> 
 								</td>
 
 							</tr>
+							
+							
 						<?php }
 					}
 					?>
 				</tbody>
 			</table>
 		</form>
+
+		<div id="enrolled_students"></div>
+		<div id="course_attachments"></div>
+
 	</div>
 
-	<script type="text/javascript" 
+	<!-- <script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
-    </script>
+    </script> -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script  type="text/javascript">
+		/*$(document).ready(function(){
+			$("#bag_icon").click(function(){
+				$("#enrolled_students").load('course_enrolled_students2.php')
+			});
+		});*/
+
+		//got to add course
+		function goto_add_course() {
+			$.ajax({
+				url : 'add_course.php',
+				type : "POST",
+				success : function(data) {
+					$("#add_course").html(data);
+					$("#navbar").hide();
+					$(".add_course_btn").hide();
+					$("#created_courses").hide();
+				}
+			});
+		}
+
+		//got to attachments 
+		function goto_attachments(id) {
+			var course_name = id;
+			$.ajax({
+				url : 'add_delete_files.php',
+				type : "POST",
+				data : {
+					course_name : course_name
+				},
+				success : function(data) {
+					$("#navbar").hide();
+					$("#show_courses").html(data);
+					
+					$(".add_course_btn").hide();
+					$("#created_courses").hide();
+				}
+			});
+		}
 		// function to delete the course
 		function delete_course(id) {
 			var course_id = id;
@@ -188,17 +233,17 @@ $result = mysqli_query($con, $query);
 					},
 					success : function(data) {
 						if(data == 1) {
-							alert("Course not deleted. Please try again...");
+							/*$("#msg").html("<div class='alert alert-danger'>" + Course not deleted. Please try again... + "</div>");*/
+							/*alert("Course not deleted. Please try again...");*/
 						} else {
-							alert(data);
+							$("#msg").html("<div class='alert alert-danger'>" + data + "</div>");
 							$("#navbar").hide();
 							$(".add_course_btn").hide();
-							$("#created_courses").load("created_courses.php");
+							$("#created_courses").load("#created_courses");
 						}
 					}
 				});
 			}
-			
 		}
 
 		// update status - active or inactive
@@ -222,25 +267,49 @@ $result = mysqli_query($con, $query);
 		}
 
 		// bag icon
-		function on_click(id) {
+		/*function on_click(id) {
 			$id = id;
-			var course_id = id; 
+			var get_course_id = id; 
 			console.log($id);
 			$.ajax({
 				url : "course_enrolled_students.php",
 				type : "POST",
 				data : {
-					course_id : course_id
+					get_course_id : get_course_id
 				},
 				success : function(data) {
-					/*$("#navbar").hide();
-					$(".add_course_btn").hide();*/
-					/*$('#created_courses').load('created_courses.php');*/
+					//$("#navbar").hide();
+					//$(".add_course_btn").hide();
+					//$('#created_courses').load('created_courses.php');
 					document.location.href = 'course_enrolled_students.php';
 				}
 			});
-		}
+		}*/
 
+		// bag icon -> enrolled students
+		function on_click(id) {
+			$id = id;
+			var get_course_id = id; 
+			console.log($id);
+
+			$.ajax({
+				url : 'course_enrolled_students2.php',
+				method : "POST",
+				data : {
+					get_course_id : get_course_id
+				},
+				success : function(data) {
+					/*$("#enrolled_students").load("course_enrolled_students2.php");*/
+					/*$("#enrolled_students").html(data);*/
+					$("#navbar").hide();
+					$("#show_courses").html(data);
+					
+					$(".add_course_btn").hide();
+					$("#created_courses").hide();
+				}
+			});
+		}
+		
 		//function to save the name
 		function autosave_name(id, name) {
 			//assign variables to parameter values

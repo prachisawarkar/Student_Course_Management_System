@@ -8,7 +8,7 @@ if(!isset($_SESSION['valid'])) {
 include 'db_connect.php';
 
 //select the data of the id whose session is active
-$query = "select * from teacher_info where id = " . $_SESSION['id'] ;
+$query = "select * from users where id = " . $_SESSION['id'] ;
 $result = mysqli_query($con, $query);
 $row = $result -> fetch_assoc(); //fetch data
 

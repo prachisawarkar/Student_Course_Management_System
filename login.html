@@ -23,8 +23,9 @@
 	<!-- student sign in -->
 	<div class="container" id = "login_form_div">
 		<p></p>
-		<h1 class="text-primary">Student Sign In</h1>
+		<h1 class="text-primary">Sign In</h1>
 		<br><br>
+		<div id="msg"></div>
 		<form method="post" name="signin" id="student_login_form">
 			<div class="form-group">
 				<label for="username">Username:</label>
@@ -42,27 +43,6 @@
 		</form>
 	</div>
 
-	<!-- teacher sign in -->
-	<div class="container">
-		<h1 class="text-primary">Teacher Sign In</h1>
-		<br><br>
-		<form method="post" name="teacher_signin">
-			<div class="form-group">
-				<label for="tusername">Username:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="tusername_error"></span>
-				<input type="text" name="tusername" id="tusername" class="form-control" placeholder="Username" required>
-			</div>
-			<div class="form-group">
-				<label for="tpassword">Password:</label>
-				<span class="required">*</span>
-				<span class="error_message" id="tpassword_error"></span>
-				<input type="password" name="tpassword" id="tpassword" class="form-control" placeholder="Password" required>
-			</div>
-			<input type="button" name="teacher_signin" class="btn btn-primary" value="Sign in" id="teacher_signin">
-		</form>
-	</div>
-
 	<script type="text/javascript" 
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script>
@@ -72,8 +52,6 @@
 				var username = $('#username').val();
 				var password = $('#password').val();
 				
-				//button get disabled on click
-				$('#signin').attr("disabled", "disabled");
 				$.ajax({
 					url : 'login.php',
 					type : 'POST',
@@ -83,41 +61,20 @@
 					},
 					cache : false,
 					success : function(data) {
-						if(data == username + " logged in successfully") {
+						if(data == 'student login successfully') {
 							//redirect to profile page
 							document.location.href = "profile.php";
 							/*$('#login_form_div').hide();
 							$('#sign_up_link').hide();
 							$('#student_login_form').load('profile.php')*/;
+						} else if(data == 'teacher login successfully') {
+							//redirect to profile page
+							document.location.href = "teacher_profile.php";
+							/*$('#login_form_div').hide();
+							$('#sign_up_link').hide();
+							$('#student_login_form').load('profile.php')*/;
 						} else {
-							//redirect to registration page
-							document.location.href = "addStudent.html";
-							/*$('#student_login_form').load('addStudent.html');*/
-						}
-					}
-				});
-			});
-
-
-			//teacher Sign in
-			$('#teacher_signin').click(function() {
-				var tusername = $('#tusername').val();
-				var tpassword = $('#tpassword').val();
-
-				$('#teacher_signin').attr("disabled", "disabled");
-				$.ajax({
-					url : 'teacher_login.php',
-					type : 'POST',
-					data : {
-						tusername : tusername,
-						tpassword : tpassword
-					},
-					cache : false,
-					success : function(data) {
-						if(data == 1) {
-							document.location.href = 'teacher_profile.php';
-						} else {
-							document.location.href = 'login.html';
+							$("#msg").html("<div class='alert alert-danger'>" + "Username or Password is incorrect. Please Do Sign Up!" + "</div>");
 						}
 					}
 				});

@@ -36,8 +36,8 @@ for($i = 0; $i < $totalfiles; $i++) {
 			//insert query to insert into the database into the courses table
 			$insert_query = "INSERT INTO `course_attachments` (`course_id`, `notes`) values ('$course_id', '$filename')";
 			if(mysqli_query($con, $insert_query)) {
-				echo("1");
 				/*header("Location : add_delete_files.php");*/
+				echo "Notes added successfully";
 				?>
 				
 			<?php } else {

@@ -10,7 +10,7 @@ $query = "select * from my_courses where student_id = '$id'";
 $result = mysqli_query($con, $query);
 
 //select the data to display the data disable or enable according to the student status and course status of the student
-$student_status_query = "select * from student_registration where id = '$id'";
+$student_status_query = "select * from users where id = '$id'";
 $status_result = mysqli_query($con, $student_status_query);
 $status_row = $status_result -> fetch_assoc();
 $student_status = $status_row['status'];
@@ -95,6 +95,7 @@ $result1 = mysqli_query($con, $expired_courses);*/
 				//enable the course
 			
 				if($student_status == 1 && $row['status'] == 1 && $row['end_date'] > date('Y-m-d')) { ?>
+					<p id="attachments"></p>
 					<div class="row mb-5" style="border : 2px solid #293946;">
 						<div class="col-md-6">
 							<h3> <?php echo $row['name'] ?> </h3>
@@ -103,15 +104,21 @@ $result1 = mysqli_query($con, $expired_courses);*/
 						</div>
 						<!-- to download the notes -->
 						<div class="col-md-3">
-							<a href="download_notes.php?course_name=<?php echo $row['name'] ?>">
+							<!-- <a href="download_notes.php?course_name=<?php echo $row['name'] ?>">
 								<h4>Download Notes</h4>
 								<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
-							</a>
+							</a> -->
+							<button type="button" id="<?php echo $row['name']; ?>" onclick="return show_notes(this.id)">
+								<hs4>Download Notes</h4>
+								<img src="notes_icon2.jpg" alt="" width="45px;" height="45px">
+							</button>
 						</div>
+						<!-- <div id="attachments"></div> -->
 						<div class="col-md-3"> <!-- enroll now button -->
 							<input type="button" name="enroll_now" value="ENROLLED" class="btn btn-primary mt-3">
 						</div>
 					</div>
+
 				<?php } else if($student_status == 1 && $row['status'] == 1 && $row['end_date'] < date('Y-m-d')) { ?>
 					<!-- disable the course -->
 					<div class="row mb-5" style="border : 2px solid #293946;">
@@ -127,45 +134,12 @@ $result1 = mysqli_query($con, $expired_courses);*/
 					</div>
 				<?php } else if($student_status == 1 && $row['status'] == 0) { ?> 
 					<!-- unable to view the course -->
-					<!-- <div class="row mb-5" style="border : 2px solid #293946;">
-						<div class="col-md-6">
-							<h3> <?php echo $row['name'] ?> </h3>
-							<p> <?php echo $row['summary'] ?> </p>
-							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
-						</div>
-						<div class="col-md-3"></div>
-						<div class="col-md-3">
-							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3">
-						</div>
-					</div> -->
 					<?php echo " "; ?>
 				<?php } else if($student_status == 0 && $row['status'] == 1) { ?>
 					<!-- unable to view the course -->
-					<!-- <div class="row mb-5" style="border : 2px solid #293946;">
-						<div class="col-md-6">
-							<h3> <?php echo $row['name'] ?> </h3>
-							<p> <?php echo $row['summary'] ?> </p>
-							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
-						</div>
-						<div class="col-md-3"></div>
-						<div class="col-md-3">
-							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3 mt-3">
-						</div>
-					</div> -->
 					<?php echo " " ?>
 				<?php } else if($student_status == 0 && $row['status'] == 0) { ?>
 					<!-- unable to view the course -->
-					<!-- <div class="row mb-5" style="border : 2px solid #293946;">
-						<div class="col-md-6">
-							<h3> <?php echo $row['name'] ?> </h3>
-							<p> <?php echo $row['summary'] ?> </p>
-							<p> <?php echo $row['start_date'] . " to " . $row['end_date'] ?> </p>
-						</div>
-						<div class="col-md-3"></div>
-						<div class="col-md-3">
-							<input type="button" name="enroll_now" value="ENROLLED" disabled="true" class="btn btn-primary mb-3 mt-3">
-						</div>
-					</div> -->
 					<?php echo " " ?>
 				<?php } else { ?>
 					<h3>No course is enrolled!</h3>
@@ -175,6 +149,23 @@ $result1 = mysqli_query($con, $expired_courses);*/
 			echo "You have not enrolled in any course!";
 		}?>
 	</div>
-	
+	<script type="text/javascript" 
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+    	function show_notes(id) {
+    		var course_name = id;
+    		$.ajax({
+    			url : 'download_notes.php',
+    			type : "POST",
+    			data : {
+    				course_name : course_name
+    			},
+    			success : function(data) {
+    				$("#attachments").html(data);
+    			}
+    		});
+    	}
+    </script>
 </body>
 </html>

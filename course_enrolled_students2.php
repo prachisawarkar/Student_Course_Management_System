@@ -7,8 +7,8 @@ if(!isset($_SESSION['valid'])) {
 //database connection file
 include "db_connect.php";
 //get the course id
-$course_id = $_SESSION['id'];
-
+$course_id = $_POST['get_course_id'];
+$_SESSION['id'] = $course_id;
 //select data to display the enrolled students in the selected course
 $query = "select sc.id as id, sr.name as name, sr.email as email, sr.username as username, sr.phone_no as phone_no, sc.status as status from users sr join my_courses sc on sr.id = sc.student_id where course_id = '$course_id'";
 $result = mysqli_query($con, $query); 

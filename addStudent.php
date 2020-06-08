@@ -1,6 +1,12 @@
 <?php 
 	//database connection file
 	include 'db_connect.php';
+	$role = $_POST['role'];
+	$role_query = "select * from roles where name  = '$role'";
+	$role_result = mysqli_query($con, $role_query);
+	$role_row = $role_result -> fetch_assoc();
+	$role_id = $role_row['id']; 
+
 	$name = $_POST['name'];
 	$email = $_POST['email'];
 	$username = $_POST['username'];
@@ -8,8 +14,6 @@
 	$confirm_password = $_POST['confirm_password'];
 	$phone_no = $_POST['phone_no'];
 	$address = $_POST['address'];
-
-	$encrypted_password = md5($password);
 
 	$filename = $_FILES['image']['name'];
 	
@@ -23,7 +27,7 @@
 	$file = $_FILES['image']['tmp_name'];
 	$size = $_FILES['image']['size'];
 	
-	$query = "select * from student_registration where email = '$email'";
+	$query = "select * from users where email = '$email'";
 	$result = mysqli_query($con, $query);
 	if($result->num_rows > 0) {
 		echo "Already Registered";
@@ -32,7 +36,7 @@
 	} else {
 		if(!empty($filename)) {
 			//specific extensions allowed
-			if(!in_array($extension, ['jpeg', 'jpg', 'png'])) {
+			if(!in_array($extension, ['jpeg', 'jpg', 'png', 'JPG', 'JPEG', 'PNG'])) {
 				echo "File extension must be .jpeg, .jpg or .png"; 
 				/*header("Location : addStudent.html");*/ ?>
 			<?php } else {
@@ -40,7 +44,7 @@
 				if(move_uploaded_file($file, $destination)) {
 					
 					//insert query to insert into the database into the student_registration table
-					$insert_query = "INSERT INTO `student_registration` (`name`, `email`, `username`, `password`, `confirm_password`, `encrypted_password`, `phone_no`, `address`, `image`, `created`) values ('$name', '$email', '$username', '$password', '$confirm_password', '$encrypted_password', '$phone_no', '$address', '$filename', now())";
+					$insert_query = "INSERT INTO `users` (`role_id`, `name`, `email`, `username`, `password`, `confirm_password`, `phone_no`, `address`, `image`, `created`) values ('$role_id', '$name', '$email', '$username', '$password', '$confirm_password', '$phone_no', '$address', '$filename', now())";
 					if(mysqli_query($con, $insert_query)) {
 						echo("1"); 
 						/*header("Location : login.html");*/ ?>
@@ -58,8 +62,8 @@
 				<?php }
 			}
 		} else {
-			//insert query to insert into the database into the student_registration table
-			$insert_query1 = "INSERT INTO `student_registration` (`name`, `email`, `username`, `password`, `confirm_password`, `encrypted_password`, `phone_no`, `address`, `created`) values ('$name', '$email', '$username', '$password', '$confirm_password', '$encrypted_password', '$phone_no', '$address', now())";
+			//insert query to insert into the database into the users table
+			$insert_query1 = "INSERT INTO `users` (`role_id`, `name`, `email`, `username`, `password`, `confirm_password`, `phone_no`, `address`, `created`) values ('$role_id', '$name', '$email', '$username', '$password', '$confirm_password', '$phone_no', '$address', now())";
 			if(mysqli_query($con, $insert_query1)) {
 			echo("1");
 			/*header("Location : login.html");*/ ?>
